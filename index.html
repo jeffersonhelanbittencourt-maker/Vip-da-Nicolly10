@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VIP da Nicolly</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Poppins', sans-serif; background-color: #000; color: #fff; }
@@ -96,7 +97,8 @@
             <div class="bg-neutral-950 border border-neutral-800 p-6 rounded-2xl space-y-3">
                 <h3 class="text-sm uppercase text-gray-400 font-semibold">Status da Assinatura</h3>
                 <p id="statusAssinaturaCliente" class="text-xl font-bold text-yellow-400">Aguardando Pagamento</p>
-                <p class="text-xs text-gray-500">Assim que o Pix for confirmado, seu acesso será liberado automaticamente.</p>
+                <p class="text-xs text-gray-500">Escolha um plano na tela inicial ou aguarde a confirmação do Pix.</p>
+                <button onclick="mostrarTela('home')" class="mt-2 bg-pink-600 hover:bg-pink-500 text-white text-xs font-semibold px-4 py-2 rounded-lg transition">Escolher Plano</button>
             </div>
 
             <div class="bg-neutral-950 border border-pink-900/50 p-6 rounded-2xl space-y-4">
@@ -125,8 +127,8 @@
                 <p class="text-2xl font-bold text-pink-500 mt-1">3</p>
             </div>
             <div class="bg-neutral-950 border border-neutral-800 p-4 rounded-xl">
-                <p class="text-xs text-gray-400">Status Mercado Pago</p>
-                <p class="text-sm font-bold text-green-400 mt-2">● Conectado (Pix)</p>
+                <p class="text-xs text-gray-400">Banco de Dados</p>
+                <p id="statusSupabaseAdmin" class="text-sm font-bold text-green-400 mt-2">● Supabase Conectado</p>
             </div>
             <div class="bg-neutral-950 border border-neutral-800 p-4 rounded-xl">
                 <p class="text-xs text-gray-400">Link do Grupo</p>
@@ -180,6 +182,24 @@
     </footer>
 
     <script>
+        // ==========================================
+        // CONFIGURAÇÃO DO SUPABASE (OFICIAL)
+        // ==========================================
+        const SUPABASE_URL = 'https://wodlhlwezckslounvmlx.supabase.co';
+        const SUPABASE_KEY = 'sb_publishable_gTnYby203YRRUb0DeNqcKg_Nqe0M9Yr';
+        
+        let supabaseClient = null;
+        try {
+            if (window.supabase) {
+                supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+            }
+        } catch (err) {
+            console.warn('Erro ao iniciar Supabase:', err);
+        }
+
+        // ==========================================
+        // ESTADO DO SISTEMA E ADMINISTRADORES
+        // ==========================================
         let adminAtual = null;
         let senhasAdmin = JSON.parse(localStorage.getItem('vip_admin_senhas')) || {
             'nicolly': { senha: '0411', trocou: false, nome: 'Nicolly (Administradora Principal)' },
@@ -207,7 +227,9 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // Pop-up de Autenticação (Entrar ou Cadastrar)
+        // ==========================================
+        // POP-UP DE AUTENTICAÇÃO (LOGIN / CADASTRO)
+        // ==========================================
         function abrirModalAuth(tipo) {
             const modal = document.getElementById('modalContainer');
             const content = document.getElementById('modalContent');
@@ -215,8 +237,12 @@
             
             content.innerHTML = `
                 <button onclick="fecharModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl">✕</button>
-                <h3 class="text-2xl font-bold text-pink-500 mb-2">${isLogin ? 'Entrar na Conta' : 'Criar Conta VIP'}</h3>
-                <p class="text-xs text-gray-400 mb-6">${isLogin ? 'Aceda à sua área exclusiva' : 'Registe-se para desbloquear os planos'}</p>
+                <div class="flex space-x-2 mb-6 border-b border-neutral-800 pb-3">
+                    <button type="button" onclick="abrirModalAuth('login')" class="text-sm font-bold pb-1 ${isLogin ? 'text-pink-500 border-b-2 border-pink-500' : 'text-gray-400 hover:text-white'}">Entrar</button>
+                    <button type="button" onclick="abrirModalAuth('cadastro')" class="text-sm font-bold pb-1 ${!isLogin ? 'text-pink-500 border-b-2 border-pink-500' : 'text-gray-400 hover:text-white'}">Criar Conta</button>
+                </div>
+                <h3 class="text-2xl font-bold text-white mb-1">${isLogin ? 'Bem-vindo de volta' : 'Crie sua Conta VIP'}</h3>
+                <p class="text-xs text-gray-400 mb-6">${isLogin ? 'Acesse sua área exclusiva de assinante' : 'Cadastre-se gratuitamente para assinar um plano'}</p>
                 <form onsubmit="executarAuth(event, '${tipo}')" class="space-y-4 text-left">
                     ${!isLogin ? `<div><label class="text-xs text-gray-400">Nome Completo</label><input type="text" id="nomeReg" required class="w-full mt-1 bg-black border border-neutral-800 rounded-lg p-3 text-white focus:border-pink-500 outline-none" placeholder="Seu nome"></div>` : ''}
                     <div>
@@ -225,25 +251,60 @@
                     </div>
                     <div>
                         <label class="text-xs text-gray-400">Senha</label>
-                        <input type="password" id="senhaAuth" required class="w-full mt-1 bg-black border border-neutral-800 rounded-lg p-3 text-white focus:border-pink-500 outline-none" placeholder="••••••••">
+                        <input type="password" id="senhaAuth" required minlength="6" class="w-full mt-1 bg-black border border-neutral-800 rounded-lg p-3 text-white focus:border-pink-500 outline-none" placeholder="Mínimo 6 caracteres">
                     </div>
-                    <button type="submit" class="w-full bg-pink-600 hover:bg-pink-500 text-white font-semibold py-3 rounded-xl transition mt-2">${isLogin ? 'Entrar no Sistema' : 'Concluir Cadastro'}</button>
+                    <button type="submit" id="btnSubmitAuth" class="w-full bg-pink-600 hover:bg-pink-500 text-white font-semibold py-3 rounded-xl transition mt-2">${isLogin ? 'Entrar na Conta' : 'Finalizar Cadastro'}</button>
                 </form>
                 <p class="text-xs text-center text-gray-400 mt-4">
-                    ${isLogin ? 'Não tem conta? <span class="text-pink-400 cursor-pointer underline font-semibold" onclick="abrirModalAuth(\\'cadastro\\')">Cadastre-se grátis</span>' : 'Já tem conta? <span class="text-pink-400 cursor-pointer underline font-semibold" onclick="abrirModalAuth(\\'login\\')">Faça login</span>'}
+                    ${isLogin ? 'Ainda não tem conta? <span class="text-pink-400 cursor-pointer underline font-semibold" onclick="abrirModalAuth(\\'cadastro\\')">Cadastre-se aqui</span>' : 'Já possui uma conta? <span class="text-pink-400 cursor-pointer underline font-semibold" onclick="abrirModalAuth(\\'login\\')">Fazer login</span>'}
                 </p>
             `;
             modal.classList.remove('hidden');
         }
 
-        function executarAuth(e, tipo) {
+        async function executarAuth(e, tipo) {
             e.preventDefault();
-            const email = document.getElementById('emailAuth').value;
-            document.getElementById('clienteBemVindo').innerText = `Cliente: ${email}`;
-            fecharModal();
-            mostrarTela('cliente');
+            const btn = document.getElementById('btnSubmitAuth');
+            const email = document.getElementById('emailAuth').value.trim();
+            const password = document.getElementById('senhaAuth').value;
+            const nome = document.getElementById('nomeReg') ? document.getElementById('nomeReg').value.trim() : '';
+
+            btn.innerText = 'Processando...';
+            btn.disabled = true;
+
+            try {
+                if (supabaseClient) {
+                    if (tipo === 'cadastro') {
+                        const { data, error } = await supabaseClient.auth.signUp({
+                            email,
+                            password,
+                            options: { data: { full_name: nome } }
+                        });
+                        if (error) throw error;
+                        alert('Cadastro realizado com sucesso!');
+                    } else {
+                        const { data, error } = await supabaseClient.auth.signInWithPassword({
+                            email,
+                            password
+                        });
+                        if (error) throw error;
+                    }
+                }
+
+                document.getElementById('clienteBemVindo').innerText = `Cliente: ${nome || email}`;
+                fecharModal();
+                mostrarTela('cliente');
+            } catch (err) {
+                alert('Erro: ' + (err.message || 'Falha na autenticação. Verifique os dados.'));
+            } finally {
+                btn.innerText = tipo === 'login' ? 'Entrar na Conta' : 'Finalizar Cadastro';
+                btn.disabled = false;
+            }
         }
 
+        // ==========================================
+        // PAINEL ADMINISTRATIVO (NICOLLY / JEFFERSON)
+        // ==========================================
         function abrirLoginAdmin() {
             const modal = document.getElementById('modalContainer');
             const content = document.getElementById('modalContent');
@@ -292,135 +353,4 @@
                 <p class="text-xs text-gray-300 mb-4">Olá, <strong>${user}</strong>. Altere sua senha inicial (0411) antes de prosseguir.</p>
                 <form onsubmit="salvarNovaSenhaAdmin(event, '${user}')" class="space-y-4 text-left">
                     <div>
-                        <label class="text-xs text-gray-400">Nova Senha</label>
-                        <input type="password" id="novaSenhaAdmin" required minlength="4" class="w-full mt-1 bg-black border border-neutral-800 rounded-lg p-3 text-white focus:border-pink-500 outline-none">
-                    </div>
-                    <button type="submit" class="w-full bg-pink-600 hover:bg-pink-500 text-white font-semibold py-3 rounded-xl transition">Salvar e Entrar</button>
-                </form>
-            `;
-        }
-
-        function salvarNovaSenhaAdmin(e, user) {
-            e.preventDefault();
-            const nova = document.getElementById('novaSenhaAdmin').value;
-            senhasAdmin[user].senha = nova;
-            senhasAdmin[user].trocou = true;
-            localStorage.setItem('vip_admin_senhas', JSON.stringify(senhasAdmin));
-            alert('Senha atualizada com sucesso!');
-            fecharModal();
-            mostrarTela('admin');
-        }
-
-        function atualizarPainelAdminUI() {
-            if (!adminAtual) return;
-            document.getElementById('adminLogadoInfo').innerText = `Logado como: ${senhasAdmin[adminAtual].nome}`;
-            document.getElementById('inputLinkWhatsApp').value = configGrupo.link;
-            document.getElementById('dataUltimaAlteracao').innerText = configGrupo.ultimaAlteracao;
-            document.getElementById('adminResponsavelAlteracao').innerText = configGrupo.responsavel;
-            
-            const indicador = document.getElementById('indicadorLinkAdmin');
-            if (configGrupo.link) {
-                indicador.innerText = '● Link Configurado';
-                indicador.className = 'text-sm font-bold text-green-400 mt-2';
-            } else {
-                indicador.innerText = '● Não configurado';
-                indicador.className = 'text-sm font-bold text-yellow-400 mt-2';
-            }
-
-            const btnToggle = document.getElementById('btnToggleGrupo');
-            if (configGrupo.ativo) {
-                btnToggle.innerText = 'ATIVADO';
-                btnToggle.className = 'bg-green-600 text-white text-xs font-bold px-3 py-1 rounded-full';
-            } else {
-                btnToggle.innerText = 'DESATIVADO';
-                btnToggle.className = 'bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full';
-            }
-        }
-
-        function salvarLinkWhatsApp() {
-            const link = document.getElementById('inputLinkWhatsApp').value.trim();
-            if (!link || !link.startsWith('https://chat.whatsapp.com/')) {
-                alert('Insira um link válido de convite do WhatsApp.');
-                return;
-            }
-            configGrupo.link = link;
-            configGrupo.ultimaAlteracao = new Date().toLocaleString('pt-BR');
-            configGrupo.responsavel = senhasAdmin[adminAtual].nome;
-            localStorage.setItem('vip_config_grupo', JSON.stringify(configGrupo));
-            atualizarPainelAdminUI();
-            alert('Link do Grupo VIP salvo com sucesso!');
-        }
-
-        function visualizarLinkAtual() {
-            if (!configGrupo.link) {
-                alert('Nenhum link cadastrado.');
-                return;
-            }
-            alert(`Link atual:\n${configGrupo.link}`);
-        }
-
-        function limparLinkWhatsApp() {
-            if (confirm('Deseja remover o link?')) {
-                configGrupo.link = '';
-                configGrupo.ultimaAlteracao = new Date().toLocaleString('pt-BR');
-                configGrupo.responsavel = senhasAdmin[adminAtual].nome;
-                localStorage.setItem('vip_config_grupo', JSON.stringify(configGrupo));
-                atualizarPainelAdminUI();
-            }
-        }
-
-        function alternarStatusGrupo() {
-            configGrupo.ativo = !configGrupo.ativo;
-            configGrupo.ultimaAlteracao = new Date().toLocaleString('pt-BR');
-            configGrupo.responsavel = senhasAdmin[adminAtual].nome;
-            localStorage.setItem('vip_config_grupo', JSON.stringify(configGrupo));
-            atualizarPainelAdminUI();
-        }
-
-        function assinarPlano(nomePlano, valor) {
-            const modal = document.getElementById('modalContainer');
-            const content = document.getElementById('modalContent');
-            content.innerHTML = `
-                <button onclick="fecharModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl">✕</button>
-                <h3 class="text-2xl font-bold text-pink-500 mb-2">Plano ${nomePlano}</h3>
-                <p class="text-sm text-gray-300 mb-6">Valor: <span class="text-white font-bold text-lg">R$ ${valor},00</span></p>
-                <div class="bg-black border border-neutral-800 p-4 rounded-xl text-center space-y-3">
-                    <p class="text-xs text-gray-400">Escaneie o QR Code Pix ou copie a chave:</p>
-                    <div class="bg-white p-3 inline-block rounded-lg">
-                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=00020126580136br.gov.bcb.pix...${valor}" alt="QR Code Pix" class="mx-auto w-32 h-32">
-                    </div>
-                    <input type="text" readonly value="00020126580136br.gov.bcb.pix...chavepix${valor}" class="w-full bg-neutral-900 border border-neutral-800 rounded p-2 text-xs text-gray-400 text-center select-all">
-                    <button onclick="simularConfirmacaoPix('${nomePlano}')" class="w-full bg-pink-600 hover:bg-pink-500 text-white font-semibold py-2.5 rounded-lg transition text-sm">Já fiz o pagamento</button>
-                </div>
-            `;
-            modal.classList.remove('hidden');
-        }
-
-        function simularConfirmacaoPix(plano) {
-            fecharModal();
-            mostrarTela('cliente');
-            document.getElementById('statusAssinaturaCliente').innerText = `● Ativa (Plano ${plano})`;
-            document.getElementById('statusAssinaturaCliente').className = 'text-xl font-bold text-green-400';
-
-            const boxGrupo = document.getElementById('boxBotaoGrupoCliente');
-            if (configGrupo.ativo && configGrupo.link) {
-                boxGrupo.innerHTML = `
-                    <p class="text-xs text-green-400 mb-3">Assinatura verificada! Acesso liberado.</p>
-                    <a href="${configGrupo.link}" target="_blank" class="block text-center bg-green-600 hover:bg-green-500 text-white font-bold py-3 px-4 rounded-xl transition">ENTRAR NO GRUPO VIP DO WHATSAPP</a>
-                `;
-            } else {
-                boxGrupo.innerHTML = `<p class="text-xs text-yellow-400">Aguardando configuração do link pelo administrador.</p>`;
-            }
-        }
-
-        function sairConta() {
-            adminAtual = null;
-            mostrarTela('home');
-        }
-
-        function fecharModal() {
-            document.getElementById('modalContainer').classList.add('hidden');
-        }
-    </script>
-</body>
-</html>
+                        <label class
