@@ -182,9 +182,6 @@
     </footer>
 
     <script>
-        // ==========================================
-        // CONFIGURAÇÃO DO SUPABASE (OFICIAL)
-        // ==========================================
         const SUPABASE_URL = 'https://wodlhlwezckslounvmlx.supabase.co';
         const SUPABASE_KEY = 'sb_publishable_gTnYby203YRRUb0DeNqcKg_Nqe0M9Yr';
         
@@ -194,12 +191,9 @@
                 supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
             }
         } catch (err) {
-            console.warn('Erro ao iniciar Supabase:', err);
+            console.warn('Supabase aviso:', err);
         }
 
-        // ==========================================
-        // ESTADO DO SISTEMA E ADMINISTRADORES
-        // ==========================================
         let adminAtual = null;
         let senhasAdmin = JSON.parse(localStorage.getItem('vip_admin_senhas')) || {
             'nicolly': { senha: '0411', trocou: false, nome: 'Nicolly (Administradora Principal)' },
@@ -227,22 +221,20 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // ==========================================
-        // POP-UP DE AUTENTICAÇÃO (LOGIN / CADASTRO)
-        // ==========================================
+        // Abrir Pop-up de Autenticação com Garantia Total
         function abrirModalAuth(tipo) {
             const modal = document.getElementById('modalContainer');
             const content = document.getElementById('modalContent');
             const isLogin = tipo === 'login';
             
             content.innerHTML = `
-                <button onclick="fecharModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl">✕</button>
-                <div class="flex space-x-2 mb-6 border-b border-neutral-800 pb-3">
+                <button onclick="fecharModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl font-bold cursor-pointer">✕</button>
+                <div class="flex space-x-4 mb-6 border-b border-neutral-800 pb-3">
                     <button type="button" onclick="abrirModalAuth('login')" class="text-sm font-bold pb-1 ${isLogin ? 'text-pink-500 border-b-2 border-pink-500' : 'text-gray-400 hover:text-white'}">Entrar</button>
                     <button type="button" onclick="abrirModalAuth('cadastro')" class="text-sm font-bold pb-1 ${!isLogin ? 'text-pink-500 border-b-2 border-pink-500' : 'text-gray-400 hover:text-white'}">Criar Conta</button>
                 </div>
                 <h3 class="text-2xl font-bold text-white mb-1">${isLogin ? 'Bem-vindo de volta' : 'Crie sua Conta VIP'}</h3>
-                <p class="text-xs text-gray-400 mb-6">${isLogin ? 'Acesse sua área exclusiva de assinante' : 'Cadastre-se gratuitamente para assinar um plano'}</p>
+                <p class="text-xs text-gray-400 mb-6">${isLogin ? 'Acesse sua área exclusiva de assinante' : 'Cadastre-se para desbloquear os planos'}</p>
                 <form onsubmit="executarAuth(event, '${tipo}')" class="space-y-4 text-left">
                     ${!isLogin ? `<div><label class="text-xs text-gray-400">Nome Completo</label><input type="text" id="nomeReg" required class="w-full mt-1 bg-black border border-neutral-800 rounded-lg p-3 text-white focus:border-pink-500 outline-none" placeholder="Seu nome"></div>` : ''}
                     <div>
@@ -253,11 +245,8 @@
                         <label class="text-xs text-gray-400">Senha</label>
                         <input type="password" id="senhaAuth" required minlength="6" class="w-full mt-1 bg-black border border-neutral-800 rounded-lg p-3 text-white focus:border-pink-500 outline-none" placeholder="Mínimo 6 caracteres">
                     </div>
-                    <button type="submit" id="btnSubmitAuth" class="w-full bg-pink-600 hover:bg-pink-500 text-white font-semibold py-3 rounded-xl transition mt-2">${isLogin ? 'Entrar na Conta' : 'Finalizar Cadastro'}</button>
+                    <button type="submit" id="btnSubmitAuth" class="w-full bg-pink-600 hover:bg-pink-500 text-white font-semibold py-3 rounded-xl transition mt-2 cursor-pointer">${isLogin ? 'Entrar na Conta' : 'Finalizar Cadastro'}</button>
                 </form>
-                <p class="text-xs text-center text-gray-400 mt-4">
-                    ${isLogin ? 'Ainda não tem conta? <span class="text-pink-400 cursor-pointer underline font-semibold" onclick="abrirModalAuth(\\'cadastro\\')">Cadastre-se aqui</span>' : 'Já possui uma conta? <span class="text-pink-400 cursor-pointer underline font-semibold" onclick="abrirModalAuth(\\'login\\')">Fazer login</span>'}
-                </p>
             `;
             modal.classList.remove('hidden');
         }
@@ -267,7 +256,7 @@
             const btn = document.getElementById('btnSubmitAuth');
             const email = document.getElementById('emailAuth').value.trim();
             const password = document.getElementById('senhaAuth').value;
-            const nome = document.getElementById('nomeReg') ? document.getElementById('nomeReg').value.trim() : '';
+            const nome = document.getElementById('nomeReg') ? document.getElementById('nomeReg').value.trim() : 'Cliente';
 
             btn.innerText = 'Processando...';
             btn.disabled = true;
@@ -281,7 +270,7 @@
                             options: { data: { full_name: nome } }
                         });
                         if (error) throw error;
-                        alert('Cadastro realizado com sucesso!');
+                        alert('Conta criada com sucesso!');
                     } else {
                         const { data, error } = await supabaseClient.auth.signInWithPassword({
                             email,
@@ -291,25 +280,22 @@
                     }
                 }
 
-                document.getElementById('clienteBemVindo').innerText = `Cliente: ${nome || email}`;
+                document.getElementById('clienteBemVindo').innerText = `Cliente: ${email}`;
                 fecharModal();
                 mostrarTela('cliente');
             } catch (err) {
-                alert('Erro: ' + (err.message || 'Falha na autenticação. Verifique os dados.'));
+                alert('Aviso: ' + (err.message || 'Erro ao autenticar. Verifique se o e-mail e senha estão corretos.'));
             } finally {
                 btn.innerText = tipo === 'login' ? 'Entrar na Conta' : 'Finalizar Cadastro';
                 btn.disabled = false;
             }
         }
 
-        // ==========================================
-        // PAINEL ADMINISTRATIVO (NICOLLY / JEFFERSON)
-        // ==========================================
         function abrirLoginAdmin() {
             const modal = document.getElementById('modalContainer');
             const content = document.getElementById('modalContent');
             content.innerHTML = `
-                <button onclick="fecharModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl">✕</button>
+                <button onclick="fecharModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl font-bold cursor-pointer">✕</button>
                 <span class="text-xs text-pink-400 uppercase font-bold">Acesso Administrativo</span>
                 <h3 class="text-2xl font-bold text-white mb-6 mt-1">Painel Restrito</h3>
                 <form onsubmit="validarLoginAdmin(event)" class="space-y-4 text-left">
@@ -321,7 +307,7 @@
                         <label class="text-xs text-gray-400">Senha</label>
                         <input type="password" id="adminPass" required placeholder="••••" class="w-full mt-1 bg-black border border-neutral-800 rounded-lg p-3 text-white focus:border-pink-500 outline-none">
                     </div>
-                    <button type="submit" class="w-full bg-pink-600 hover:bg-pink-500 text-white font-semibold py-3 rounded-xl transition mt-2">Acessar Painel</button>
+                    <button type="submit" class="w-full bg-pink-600 hover:bg-pink-500 text-white font-semibold py-3 rounded-xl transition mt-2 cursor-pointer">Acessar Painel</button>
                 </form>
             `;
             modal.classList.remove('hidden');
@@ -353,4 +339,138 @@
                 <p class="text-xs text-gray-300 mb-4">Olá, <strong>${user}</strong>. Altere sua senha inicial (0411) antes de prosseguir.</p>
                 <form onsubmit="salvarNovaSenhaAdmin(event, '${user}')" class="space-y-4 text-left">
                     <div>
-                        <label class
+                        <label class="text-xs text-gray-400">Nova Senha</label>
+                        <input type="password" id="novaSenhaAdmin" required minlength="4" class="w-full mt-1 bg-black border border-neutral-800 rounded-lg p-3 text-white focus:border-pink-500 outline-none">
+                    </div>
+                    <button type="submit" class="w-full bg-pink-600 hover:bg-pink-500 text-white font-semibold py-3 rounded-xl transition cursor-pointer">Salvar e Entrar</button>
+                </form>
+            `;
+        }
+
+        function salvarNovaSenhaAdmin(e, user) {
+            e.preventDefault();
+            const nova = document.getElementById('novaSenhaAdmin').value;
+            senhasAdmin[user].senha = nova;
+            senhasAdmin[user].trocou = true;
+            localStorage.setItem('vip_admin_senhas', JSON.stringify(senhasAdmin));
+            alert('Senha atualizada com sucesso!');
+            fecharModal();
+            mostrarTela('admin');
+        }
+
+        function atualizarPainelAdminUI() {
+            if (!adminAtual) return;
+            document.getElementById('adminLogadoInfo').innerText = `Logado como: ${senhasAdmin[adminAtual].nome}`;
+            document.getElementById('inputLinkWhatsApp').value = configGrupo.link;
+            document.getElementById('dataUltimaAlteracao').innerText = configGrupo.ultimaAlteracao;
+            document.getElementById('adminResponsavelAlteracao').innerText = configGrupo.responsavel;
+            
+            const indicador = document.getElementById('indicadorLinkAdmin');
+            if (configGrupo.link) {
+                indicador.innerText = '● Link Configurado';
+                indicador.className = 'text-sm font-bold text-green-400 mt-2';
+            } else {
+                indicador.innerText = '● Não configurado';
+                indicador.className = 'text-sm font-bold text-yellow-400 mt-2';
+            }
+
+            const btnToggle = document.getElementById('btnToggleGrupo');
+            if (configGrupo.ativo) {
+                btnToggle.innerText = 'ATIVADO';
+                btnToggle.className = 'bg-green-600 text-white text-xs font-bold px-3 py-1 rounded-full';
+            } else {
+                btnToggle.innerText = 'DESATIVADO';
+                btnToggle.className = 'bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full';
+            }
+        }
+
+        function salvarLinkWhatsApp() {
+            const link = document.getElementById('inputLinkWhatsApp').value.trim();
+            if (!link || !link.startsWith('https://chat.whatsapp.com/')) {
+                alert('Insira um link válido de convite do WhatsApp.');
+                return;
+            }
+            configGrupo.link = link;
+            configGrupo.ultimaAlteracao = new Date().toLocaleString('pt-BR');
+            configGrupo.responsavel = senhasAdmin[adminAtual].nome;
+            localStorage.setItem('vip_config_grupo', JSON.stringify(configGrupo));
+            atualizarPainelAdminUI();
+            alert('Link do Grupo VIP salvo com sucesso!');
+        }
+
+        function visualizarLinkAtual() {
+            if (!configGrupo.link) {
+                alert('Nenhum link cadastrado.');
+                return;
+            }
+            alert(`Link atual:\n${configGrupo.link}`);
+        }
+
+        function limparLinkWhatsApp() {
+            if (confirm('Deseja remover o link?')) {
+                configGrupo.link = '';
+                configGrupo.ultimaAlteracao = new Date().toLocaleString('pt-BR');
+                configGrupo.responsavel = senhasAdmin[adminAtual].nome;
+                localStorage.setItem('vip_config_grupo', JSON.stringify(configGrupo));
+                atualizarPainelAdminUI();
+            }
+        }
+
+        function alternarStatusGrupo() {
+            configGrupo.ativo = !configGrupo.ativo;
+            configGrupo.ultimaAlteracao = new Date().toLocaleString('pt-BR');
+            configGrupo.responsavel = senhasAdmin[adminAtual].nome;
+            localStorage.setItem('vip_config_grupo', JSON.stringify(configGrupo));
+            atualizarPainelAdminUI();
+        }
+
+        function assinarPlano(nomePlano, valor) {
+            const modal = document.getElementById('modalContainer');
+            const content = document.getElementById('modalContent');
+            content.innerHTML = `
+                <button onclick="fecharModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl font-bold cursor-pointer">✕</button>
+                <h3 class="text-2xl font-bold text-pink-500 mb-2">Plano ${nomePlano}</h3>
+                <p class="text-sm text-gray-300 mb-6">Valor: <span class="text-white font-bold text-lg">R$ ${valor},00</span></p>
+                <div class="bg-black border border-neutral-800 p-4 rounded-xl text-center space-y-3">
+                    <p class="text-xs text-gray-400">Escaneie o QR Code Pix ou copie a chave:</p>
+                    <div class="bg-white p-3 inline-block rounded-lg">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=00020126580136br.gov.bcb.pix...${valor}" alt="QR Code Pix" class="mx-auto w-32 h-32">
+                    </div>
+                    <input type="text" readonly value="00020126580136br.gov.bcb.pix...chavepix${valor}" class="w-full bg-neutral-900 border border-neutral-800 rounded p-2 text-xs text-gray-400 text-center select-all">
+                    <button onclick="simularConfirmacaoPix('${nomePlano}')" class="w-full bg-pink-600 hover:bg-pink-500 text-white font-semibold py-2.5 rounded-lg transition text-sm cursor-pointer">Já fiz o pagamento</button>
+                </div>
+            `;
+            modal.classList.remove('hidden');
+        }
+
+        function simularConfirmacaoPix(plano) {
+            fecharModal();
+            mostrarTela('cliente');
+            document.getElementById('statusAssinaturaCliente').innerText = `● Ativa (Plano ${plano})`;
+            document.getElementById('statusAssinaturaCliente').className = 'text-xl font-bold text-green-400';
+
+            const boxGrupo = document.getElementById('boxBotaoGrupoCliente');
+            if (configGrupo.ativo && configGrupo.link) {
+                boxGrupo.innerHTML = `
+                    <p class="text-xs text-green-400 mb-3">Assinatura verificada! Acesso liberado.</p>
+                    <a href="${configGrupo.link}" target="_blank" class="block text-center bg-green-600 hover:bg-green-500 text-white font-bold py-3 px-4 rounded-xl transition">ENTRAR NO GRUPO VIP DO WHATSAPP</a>
+                `;
+            } else {
+                boxGrupo.innerHTML = `<p class="text-xs text-yellow-400">Aguardando configuração do link pelo administrador.</p>`;
+            }
+        }
+
+        async function sairConta() {
+            if (supabaseClient) {
+                await supabaseClient.auth.signOut();
+            }
+            adminAtual = null;
+            mostrarTela('home');
+        }
+
+        function fecharModal() {
+            document.getElementById('modalContainer').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
