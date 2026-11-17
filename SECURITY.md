@@ -1,3 +1,3 @@
 # Segurança
 
-Nunca exponha chaves secretas.
+Protegido.

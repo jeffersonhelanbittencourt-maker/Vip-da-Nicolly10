@@ -7,11 +7,11 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(helmet());
+app.use(helmet({ contentSecurityPolicy: false }));
 app.use(cors());
 app.use(express.json());
 
-// Servir arquivos estáticos do frontend corretamente
+// Servir arquivos estáticos diretamente
 app.use(express.static(path.join(__dirname)));
 
 app.get('/health', (req, res) => {
@@ -22,7 +22,6 @@ app.post('/api/webhooks/mercadopago', (req, res) => {
   res.status(200).json({ received: true });
 });
 
-// Redirecionar qualquer outra rota para o index.html do frontend
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });

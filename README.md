@@ -1,3 +1,3 @@
-# VIP DA NICOLLY — Sistema Completo
+# VIP da Nicolly
 
-Repositório estruturado de forma plana com o servidor corrigido para servir o frontend corretamente.
+Sistema completo pronto para uso na Render.
