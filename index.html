@@ -12,15 +12,18 @@
     </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between">
+    <!-- Cabeçalho -->
     <header class="border-b border-pink-900/40 py-4 px-6 flex justify-between items-center bg-black/80 sticky top-0 z-50 backdrop-blur">
-        <h1 class="text-2xl font-bold text-pink-500 tracking-wider">VIP DA NICOLLY</h1>
-        <div class="space-x-4">
-            <a href="#planos" class="text-sm text-gray-300 hover:text-pink-400 transition">Planos</a>
-            <a href="#login" class="bg-pink-600 hover:bg-pink-500 text-white px-4 py-2 rounded-full text-sm font-semibold transition glow-pink">Entrar</a>
+        <h1 class="text-xl md:text-2xl font-bold text-pink-500 tracking-wider cursor-pointer" onclick="mostrarTela('home')">VIP DA NICOLLY</h1>
+        <div class="flex items-center space-x-3 md:space-x-4">
+            <button onclick="mostrarTela('home')" class="text-xs md:text-sm text-gray-300 hover:text-pink-400 transition">Início</button>
+            <button onclick="abrirLoginAdmin()" class="text-xs md:text-sm border border-pink-800 text-pink-400 hover:bg-pink-950 px-3 py-1.5 rounded-full transition">Painel Admin</button>
+            <button onclick="abrirModalAuth('login')" class="bg-pink-600 hover:bg-pink-500 text-white px-4 py-1.5 rounded-full text-xs md:text-sm font-semibold transition glow-pink">Entrar</button>
         </div>
     </header>
 
-    <main class="flex-grow flex flex-col items-center justify-center text-center px-4 py-16">
+    <!-- TELA PÚBLICA (HOME) -->
+    <main id="telaHome" class="flex-grow flex flex-col items-center justify-center text-center px-4 py-12">
         <div class="max-w-3xl mx-auto space-y-6">
             <span class="bg-pink-950 text-pink-400 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-widest border border-pink-800/50">Área Exclusiva & Premium</span>
             <h2 class="text-4xl md:text-6xl font-bold tracking-tight text-white">
@@ -31,11 +34,12 @@
             </p>
             <div class="flex flex-col sm:flex-row justify-center gap-4 pt-4">
                 <a href="#planos" class="bg-pink-600 hover:bg-pink-500 text-white font-semibold px-8 py-3 rounded-xl transition glow-pink text-center">Ver Planos VIP</a>
-                <a href="#sobre" class="border border-gray-800 hover:border-pink-500 text-gray-300 hover:text-white font-semibold px-8 py-3 rounded-xl transition text-center">Conhecer Benefícios</a>
+                <button onclick="abrirModalAuth('cadastro')" class="border border-pink-600 hover:bg-pink-600/20 text-pink-400 font-semibold px-8 py-3 rounded-xl transition text-center">Criar Conta</button>
             </div>
         </div>
 
-        <div id="planos" class="mt-24 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto w-full px-4">
+        <!-- Planos -->
+        <div id="planos" class="mt-20 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto w-full px-4">
             <div class="bg-neutral-950 border border-neutral-800 p-8 rounded-2xl flex flex-col justify-between">
                 <div>
                     <h3 class="text-xl font-bold text-pink-400">Semanal</h3>
@@ -46,7 +50,7 @@
                         <li>✓ Suporte dedicado</li>
                     </ul>
                 </div>
-                <button class="mt-8 bg-pink-600 hover:bg-pink-500 text-white font-semibold py-3 rounded-xl transition">Assinar Agora</button>
+                <button onclick="assinarPlano('Semanal', 25)" class="mt-8 bg-pink-600 hover:bg-pink-500 text-white font-semibold py-3 rounded-xl transition">Assinar Agora</button>
             </div>
             
             <div class="bg-neutral-900 border-2 border-pink-600 p-8 rounded-2xl flex flex-col justify-between relative glow-pink">
@@ -60,7 +64,7 @@
                         <li>✓ Todos os benefícios</li>
                     </ul>
                 </div>
-                <button class="mt-8 bg-pink-600 hover:bg-pink-500 text-white font-semibold py-3 rounded-xl transition">Assinar Agora</button>
+                <button onclick="assinarPlano('Mensal', 50)" class="mt-8 bg-pink-600 hover:bg-pink-500 text-white font-semibold py-3 rounded-xl transition">Assinar Agora</button>
             </div>
 
             <div class="bg-neutral-950 border border-neutral-800 p-8 rounded-2xl flex flex-col justify-between">
@@ -73,13 +77,346 @@
                         <li>✓ Suporte VIP direto</li>
                     </ul>
                 </div>
-                <button class="mt-8 bg-pink-600 hover:bg-pink-500 text-white font-semibold py-3 rounded-xl transition">Assinar Agora</button>
+                <button onclick="assinarPlano('Vitalício', 200)" class="mt-8 bg-pink-600 hover:bg-pink-500 text-white font-semibold py-3 rounded-xl transition">Assinar Agora</button>
             </div>
         </div>
     </main>
 
+    <!-- ÁREA DO CLIENTE (LOGADO) -->
+    <section id="telaCliente" class="hidden flex-grow max-w-4xl mx-auto w-full px-4 py-12 space-y-8">
+        <div class="flex justify-between items-center border-b border-neutral-800 pb-4">
+            <div>
+                <h2 class="text-2xl font-bold text-pink-500">Área VIP do Cliente</h2>
+                <p id="clienteBemVindo" class="text-sm text-gray-400">Bem-vindo!</p>
+            </div>
+            <button onclick="sairConta()" class="text-xs border border-neutral-700 hover:border-red-500 text-gray-300 hover:text-red-400 px-3 py-1.5 rounded-lg">Sair</button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-neutral-950 border border-neutral-800 p-6 rounded-2xl space-y-3">
+                <h3 class="text-sm uppercase text-gray-400 font-semibold">Status da Assinatura</h3>
+                <p id="statusAssinaturaCliente" class="text-xl font-bold text-yellow-400">Aguardando Pagamento</p>
+                <p class="text-xs text-gray-500">Assim que o Pix for confirmado, seu acesso será liberado automaticamente.</p>
+            </div>
+
+            <div class="bg-neutral-950 border border-pink-900/50 p-6 rounded-2xl space-y-4">
+                <h3 class="text-sm uppercase text-pink-400 font-semibold">Grupo Privado do WhatsApp</h3>
+                <div id="boxBotaoGrupoCliente">
+                    <p class="text-xs text-gray-400">O botão de acesso exclusivo aparecerá aqui assim que sua assinatura estiver ativa.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PAINEL ADMINISTRATIVO COMPLETO -->
+    <section id="telaAdmin" class="hidden flex-grow max-w-6xl mx-auto w-full px-4 py-10 space-y-8">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-pink-900/40 pb-4">
+            <div>
+                <span class="bg-pink-950 text-pink-400 text-xs font-bold px-2.5 py-0.5 rounded uppercase">Acesso Restrito</span>
+                <h2 class="text-2xl md:text-3xl font-bold text-white mt-1">Painel Administrativo</h2>
+                <p id="adminLogadoInfo" class="text-xs text-gray-400 mt-1">Administrador ativo</p>
+            </div>
+            <button onclick="sairConta()" class="bg-neutral-900 hover:bg-red-950 text-red-400 border border-red-900/50 px-4 py-2 rounded-xl text-xs font-semibold transition">Sair do Painel</button>
+        </div>
+
+        <!-- Métricas Rápidas -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="bg-neutral-950 border border-neutral-800 p-4 rounded-xl">
+                <p class="text-xs text-gray-400">Planos Ativos</p>
+                <p class="text-2xl font-bold text-pink-500 mt-1">3</p>
+            </div>
+            <div class="bg-neutral-950 border border-neutral-800 p-4 rounded-xl">
+                <p class="text-xs text-gray-400">Status Mercado Pago</p>
+                <p class="text-sm font-bold text-green-400 mt-2">● Conectado (Pix)</p>
+            </div>
+            <div class="bg-neutral-950 border border-neutral-800 p-4 rounded-xl">
+                <p class="text-xs text-gray-400">Link do Grupo</p>
+                <p id="indicadorLinkAdmin" class="text-sm font-bold text-yellow-400 mt-2">Não configurado</p>
+            </div>
+            <div class="bg-neutral-950 border border-neutral-800 p-4 rounded-xl">
+                <p class="text-xs text-gray-400">Administradores</p>
+                <p class="text-sm font-bold text-white mt-2">Nicolly & Jefferson</p>
+            </div>
+        </div>
+
+        <!-- GERENCIAMENTO COMPLETO DO GRUPO VIP -->
+        <div class="bg-neutral-950 border-2 border-pink-900/60 p-6 md:p-8 rounded-2xl space-y-6 glow-pink">
+            <div class="flex flex-col md:flex-row justify-between md:items-center gap-2 border-b border-neutral-800 pb-4">
+                <div>
+                    <h3 class="text-lg md:text-xl font-bold text-pink-500">GERENCIAMENTO DO GRUPO VIP</h3>
+                    <p class="text-xs text-gray-400">Controle o link privado do WhatsApp em tempo real.</p>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <span class="text-xs text-gray-400">Liberação de acesso:</span>
+                    <button id="btnToggleGrupo" onclick="alternarStatusGrupo()" class="bg-green-600 text-white text-xs font-bold px-3 py-1 rounded-full">ATIVADO</button>
+                </div>
+            </div>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="text-xs text-gray-300 font-semibold block mb-1">Link de Convite do Grupo WhatsApp</label>
+                    <input type="url" id="inputLinkWhatsApp" placeholder="https://chat.whatsapp.com/..." class="w-full bg-black border border-neutral-700 focus:border-pink-500 rounded-xl p-3 text-sm text-white outline-none">
+                </div>
+
+                <div class="flex flex-wrap gap-3">
+                    <button onclick="salvarLinkWhatsApp()" class="bg-pink-600 hover:bg-pink-500 text-white text-xs font-semibold px-5 py-2.5 rounded-xl transition">Salvar / Atualizar Link</button>
+                    <button onclick="visualizarLinkAtual()" class="bg-neutral-800 hover:bg-neutral-700 text-white text-xs font-semibold px-4 py-2.5 rounded-xl transition">Visualizar Link Cadastrado</button>
+                    <button onclick="limparLinkWhatsApp()" class="border border-red-800 text-red-400 hover:bg-red-950 text-xs font-semibold px-4 py-2.5 rounded-xl transition">Remover Link</button>
+                </div>
+
+                <div class="bg-black/60 border border-neutral-800 p-4 rounded-xl text-xs text-gray-400 space-y-1">
+                    <p><strong>Última alteração:</strong> <span id="dataUltimaAlteracao">Nenhuma alteração registrada</span></p>
+                    <p><strong>Responsável:</strong> <span id="adminResponsavelAlteracao">-</span></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal Dinâmico -->
+    <div id="modalContainer" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center z-50 p-4">
+        <div id="modalContent" class="bg-neutral-900 border border-pink-900/50 p-6 rounded-2xl max-w-md w-full relative"></div>
+    </div>
+
     <footer class="border-t border-neutral-900 py-6 text-center text-xs text-gray-500">
         &copy; 2026 VIP da Nicolly. Todos os direitos reservados.
     </footer>
+
+    <script>
+        let adminAtual = null;
+        let senhasAdmin = JSON.parse(localStorage.getItem('vip_admin_senhas')) || {
+            'nicolly': { senha: '0411', trocou: false, nome: 'Nicolly (Administradora Principal)' },
+            'jefferson': { senha: '0411', trocou: false, nome: 'Jefferson (Administrador Principal)' }
+        };
+
+        let configGrupo = JSON.parse(localStorage.getItem('vip_config_grupo')) || {
+            link: '',
+            ativo: true,
+            ultimaAlteracao: 'Ainda não configurado',
+            responsavel: '-'
+        };
+
+        function mostrarTela(tela) {
+            document.getElementById('telaHome').classList.add('hidden');
+            document.getElementById('telaCliente').classList.add('hidden');
+            document.getElementById('telaAdmin').classList.add('hidden');
+
+            if (tela === 'home') document.getElementById('telaHome').classList.remove('hidden');
+            if (tela === 'cliente') document.getElementById('telaCliente').classList.remove('hidden');
+            if (tela === 'admin') {
+                document.getElementById('telaAdmin').classList.remove('hidden');
+                atualizarPainelAdminUI();
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function abrirLoginAdmin() {
+            const modal = document.getElementById('modalContainer');
+            const content = document.getElementById('modalContent');
+            content.innerHTML = `
+                <button onclick="fecharModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl">✕</button>
+                <span class="text-xs text-pink-400 uppercase font-bold">Acesso Administrativo</span>
+                <h3 class="text-2xl font-bold text-white mb-6 mt-1">Entrar no Painel</h3>
+                <form onsubmit="validarLoginAdmin(event)" class="space-y-4 text-left">
+                    <div>
+                        <label class="text-xs text-gray-400">Usuário</label>
+                        <input type="text" id="adminUser" required placeholder="nicolly ou jefferson" class="w-full mt-1 bg-black border border-neutral-800 rounded-lg p-3 text-white focus:border-pink-500 outline-none">
+                    </div>
+                    <div>
+                        <label class="text-xs text-gray-400">Senha</label>
+                        <input type="password" id="adminPass" required placeholder="••••" class="w-full mt-1 bg-black border border-neutral-800 rounded-lg p-3 text-white focus:border-pink-500 outline-none">
+                    </div>
+                    <button type="submit" class="w-full bg-pink-600 hover:bg-pink-500 text-white font-semibold py-3 rounded-xl transition mt-2">Acessar Painel</button>
+                </form>
+            `;
+            modal.classList.remove('hidden');
+        }
+
+        function validarLoginAdmin(e) {
+            e.preventDefault();
+            const user = document.getElementById('adminUser').value.trim().toLowerCase();
+            const pass = document.getElementById('adminPass').value;
+
+            if (!senhasAdmin[user] || senhasAdmin[user].senha !== pass) {
+                alert('Usuário ou senha incorretos.');
+                return;
+            }
+
+            adminAtual = user;
+            if (!senhasAdmin[user].trocou) {
+                solicitarTrocaSenhaAdmin(user);
+            } else {
+                fecharModal();
+                mostrarTela('admin');
+            }
+        }
+
+        function solicitarTrocaSenhaAdmin(user) {
+            const content = document.getElementById('modalContent');
+            content.innerHTML = `
+                <h3 class="text-xl font-bold text-pink-500 mb-2">Segurança Obrigatória</h3>
+                <p class="text-xs text-gray-300 mb-4">Olá, <strong>${user}</strong>. Altere sua senha inicial (0411) antes de prosseguir.</p>
+                <form onsubmit="salvarNovaSenhaAdmin(event, '${user}')" class="space-y-4 text-left">
+                    <div>
+                        <label class="text-xs text-gray-400">Nova Senha</label>
+                        <input type="password" id="novaSenhaAdmin" required minlength="4" class="w-full mt-1 bg-black border border-neutral-800 rounded-lg p-3 text-white focus:border-pink-500 outline-none">
+                    </div>
+                    <button type="submit" class="w-full bg-pink-600 hover:bg-pink-500 text-white font-semibold py-3 rounded-xl transition">Salvar e Entrar</button>
+                </form>
+            `;
+        }
+
+        function salvarNovaSenhaAdmin(e, user) {
+            e.preventDefault();
+            const nova = document.getElementById('novaSenhaAdmin').value;
+            senhasAdmin[user].senha = nova;
+            senhasAdmin[user].trocou = true;
+            localStorage.setItem('vip_admin_senhas', JSON.stringify(senhasAdmin));
+            alert('Senha atualizada com sucesso!');
+            fecharModal();
+            mostrarTela('admin');
+        }
+
+        function atualizarPainelAdminUI() {
+            if (!adminAtual) return;
+            document.getElementById('adminLogadoInfo').innerText = `Logado como: ${senhasAdmin[adminAtual].nome}`;
+            document.getElementById('inputLinkWhatsApp').value = configGrupo.link;
+            document.getElementById('dataUltimaAlteracao').innerText = configGrupo.ultimaAlteracao;
+            document.getElementById('adminResponsavelAlteracao').innerText = configGrupo.responsavel;
+            
+            const indicador = document.getElementById('indicadorLinkAdmin');
+            if (configGrupo.link) {
+                indicador.innerText = '● Link Configurado';
+                indicador.className = 'text-sm font-bold text-green-400 mt-2';
+            } else {
+                indicador.innerText = '● Não configurado';
+                indicador.className = 'text-sm font-bold text-yellow-400 mt-2';
+            }
+
+            const btnToggle = document.getElementById('btnToggleGrupo');
+            if (configGrupo.ativo) {
+                btnToggle.innerText = 'ATIVADO';
+                btnToggle.className = 'bg-green-600 text-white text-xs font-bold px-3 py-1 rounded-full';
+            } else {
+                btnToggle.innerText = 'DESATIVADO';
+                btnToggle.className = 'bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full';
+            }
+        }
+
+        function salvarLinkWhatsApp() {
+            const link = document.getElementById('inputLinkWhatsApp').value.trim();
+            if (!link || !link.startsWith('https://chat.whatsapp.com/')) {
+                alert('Insira um link válido de convite do WhatsApp.');
+                return;
+            }
+            configGrupo.link = link;
+            configGrupo.ultimaAlteracao = new Date().toLocaleString('pt-BR');
+            configGrupo.responsavel = senhasAdmin[adminAtual].nome;
+            localStorage.setItem('vip_config_grupo', JSON.stringify(configGrupo));
+            atualizarPainelAdminUI();
+            alert('Link do Grupo VIP salvo com sucesso!');
+        }
+
+        function visualizarLinkAtual() {
+            if (!configGrupo.link) {
+                alert('Nenhum link cadastrado.');
+                return;
+            }
+            alert(`Link atual:\n${configGrupo.link}`);
+        }
+
+        function limparLinkWhatsApp() {
+            if (confirm('Deseja remover o link?')) {
+                configGrupo.link = '';
+                configGrupo.ultimaAlteracao = new Date().toLocaleString('pt-BR');
+                configGrupo.responsavel = senhasAdmin[adminAtual].nome;
+                localStorage.setItem('vip_config_grupo', JSON.stringify(configGrupo));
+                atualizarPainelAdminUI();
+            }
+        }
+
+        function alternarStatusGrupo() {
+            configGrupo.ativo = !configGrupo.ativo;
+            configGrupo.ultimaAlteracao = new Date().toLocaleString('pt-BR');
+            configGrupo.responsavel = senhasAdmin[adminAtual].nome;
+            localStorage.setItem('vip_config_grupo', JSON.stringify(configGrupo));
+            atualizarPainelAdminUI();
+        }
+
+        function abrirModalAuth(tipo) {
+            const modal = document.getElementById('modalContainer');
+            const content = document.getElementById('modalContent');
+            const isLogin = tipo === 'login';
+            content.innerHTML = `
+                <button onclick="fecharModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl">✕</button>
+                <h3 class="text-2xl font-bold text-pink-500 mb-6">${isLogin ? 'Entrar na Conta' : 'Criar Conta VIP'}</h3>
+                <form onsubmit="executarAuth(event, '${tipo}')" class="space-y-4 text-left">
+                    ${!isLogin ? `<div><label class="text-xs text-gray-400">Nome Completo</label><input type="text" id="nome" required class="w-full mt-1 bg-black border border-neutral-800 rounded-lg p-3 text-white focus:border-pink-500 outline-none"></div>` : ''}
+                    <div>
+                        <label class="text-xs text-gray-400">E-mail</label>
+                        <input type="email" id="email" required class="w-full mt-1 bg-black border border-neutral-800 rounded-lg p-3 text-white focus:border-pink-500 outline-none" placeholder="seu@email.com">
+                    </div>
+                    <div>
+                        <label class="text-xs text-gray-400">Senha</label>
+                        <input type="password" id="senha" required class="w-full mt-1 bg-black border border-neutral-800 rounded-lg p-3 text-white focus:border-pink-500 outline-none" placeholder="••••••••">
+                    </div>
+                    <button type="submit" class="w-full bg-pink-600 hover:bg-pink-500 text-white font-semibold py-3 rounded-xl transition mt-4">${isLogin ? 'Entrar' : 'Cadastrar'}</button>
+                </form>
+            `;
+            modal.classList.remove('hidden');
+        }
+
+        function executarAuth(e, tipo) {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            document.getElementById('clienteBemVindo').innerText = `Cliente: ${email}`;
+            fecharModal();
+            mostrarTela('cliente');
+        }
+
+        function assinarPlano(nomePlano, valor) {
+            const modal = document.getElementById('modalContainer');
+            const content = document.getElementById('modalContent');
+            content.innerHTML = `
+                <button onclick="fecharModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl">✕</button>
+                <h3 class="text-2xl font-bold text-pink-500 mb-2">Plano ${nomePlano}</h3>
+                <p class="text-sm text-gray-300 mb-6">Valor: <span class="text-white font-bold text-lg">R$ ${valor},00</span></p>
+                <div class="bg-black border border-neutral-800 p-4 rounded-xl text-center space-y-3">
+                    <p class="text-xs text-gray-400">Escaneie o QR Code Pix ou copie a chave:</p>
+                    <div class="bg-white p-3 inline-block rounded-lg">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=00020126580136br.gov.bcb.pix...${valor}" alt="QR Code Pix" class="mx-auto w-32 h-32">
+                    </div>
+                    <input type="text" readonly value="00020126580136br.gov.bcb.pix...chavepix${valor}" class="w-full bg-neutral-900 border border-neutral-800 rounded p-2 text-xs text-gray-400 text-center select-all">
+                    <button onclick="simularConfirmacaoPix('${nomePlano}')" class="w-full bg-pink-600 hover:bg-pink-500 text-white font-semibold py-2.5 rounded-lg transition text-sm">Já fiz o pagamento</button>
+                </div>
+            `;
+            modal.classList.remove('hidden');
+        }
+
+        function simularConfirmacaoPix(plano) {
+            fecharModal();
+            mostrarTela('cliente');
+            document.getElementById('statusAssinaturaCliente').innerText = `● Ativa (Plano ${plano})`;
+            document.getElementById('statusAssinaturaCliente').className = 'text-xl font-bold text-green-400';
+
+            const boxGrupo = document.getElementById('boxBotaoGrupoCliente');
+            if (configGrupo.ativo && configGrupo.link) {
+                boxGrupo.innerHTML = `
+                    <p class="text-xs text-green-400 mb-3">Assinatura verificada! Acesso liberado.</p>
+                    <a href="${configGrupo.link}" target="_blank" class="block text-center bg-green-600 hover:bg-green-500 text-white font-bold py-3 px-4 rounded-xl transition">ENTRAR NO GRUPO VIP DO WHATSAPP</a>
+                `;
+            } else {
+                boxGrupo.innerHTML = `<p class="text-xs text-yellow-400">Aguardando configuração do link pelo administrador.</p>`;
+            }
+        }
+
+        function sairConta() {
+            adminAtual = null;
+            mostrarTela('home');
+        }
+
+        function fecharModal() {
+            document.getElementById('modalContainer').classList.add('hidden');
+        }
+    </script>
 </body>
 </html>
