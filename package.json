@@ -1,7 +1,7 @@
 {
   "name": "vip-da-nicolly",
   "version": "1.0.0",
-  "description": "Sistema completo VIP da Nicolly - Assinaturas, Pix via Mercado Pago, Painel Administrativo e \u00c1rea do Cliente",
+  "description": "Sistema completo VIP da Nicolly - Assinaturas, Pix via Mercado Pago, Painel Administrativo e Área do Cliente",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
