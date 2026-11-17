@@ -1,0 +1,33 @@
+{
+  "name": "vip-da-nicolly",
+  "version": "1.0.0",
+  "description": "Sistema completo VIP da Nicolly - Assinaturas, Pix via Mercado Pago, Painel Administrativo e \u00c1rea do Cliente",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "cors": "^2.8.5",
+    "helmet": "^7.1.0",
+    "dotenv": "^16.4.5",
+    "mercadopago": "^2.0.11",
+    "@supabase/supabase-js": "^2.39.8",
+    "bcryptjs": "^2.4.3",
+    "express-rate-limit": "^7.2.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/cors": "^2.8.5",
+    "@types/node": "^20.11.24",
+    "@vitejs/plugin-react": "^4.2.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.22.2",
+    "lucide-react": "^0.344.0",
+    "typescript": "^5.3.3",
+    "vite": "^5.1.4"
+  }
+}
