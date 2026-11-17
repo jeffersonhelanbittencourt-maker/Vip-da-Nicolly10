@@ -13,7 +13,7 @@
     </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between">
-    <!-- Cabeçalho Limpo (Sem botão feio de Admin) -->
+    <!-- Cabeçalho (Limpo e Profissional) -->
     <header class="border-b border-pink-900/40 py-4 px-6 flex justify-between items-center bg-black/80 sticky top-0 z-50 backdrop-blur">
         <h1 class="text-xl md:text-2xl font-bold text-pink-500 tracking-wider cursor-pointer" onclick="mostrarTela('home')">VIP DA NICOLLY</h1>
         <div class="flex items-center space-x-3 md:space-x-4">
@@ -233,7 +233,7 @@
         </div>
     </section>
 
-    <!-- Modal Dinâmico (Pop-up unificado para Cliente e Admin) -->
+    <!-- Modal Dinâmico (Pop-up flutuante completo para Login e Cadastro) -->
     <div id="modalContainer" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center z-50 p-4">
         <div id="modalContent" class="bg-neutral-900 border border-pink-900/50 p-6 rounded-2xl max-w-md w-full relative"></div>
     </div>
@@ -282,7 +282,9 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // Modal de Entrada Único (Se digitar nicolly/jefferson entra direto no Admin)
+        // ==========================================
+        // POP-UP DE AUTENTICAÇÃO (LOGIN / CADASTRO)
+        // ==========================================
         function abrirModalAuth(tipo) {
             const modal = document.getElementById('modalContainer');
             const content = document.getElementById('modalContent');
@@ -291,23 +293,26 @@
             content.innerHTML = `
                 <button onclick="fecharModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl font-bold cursor-pointer">✕</button>
                 <div class="flex space-x-4 mb-6 border-b border-neutral-800 pb-3">
-                    <button type="button" onclick="abrirModalAuth('login')" class="text-sm font-bold pb-1 ${isLogin ? 'text-pink-500 border-b-2 border-pink-500' : 'text-gray-400 hover:text-white'}">Entrar / Admin</button>
+                    <button type="button" onclick="abrirModalAuth('login')" class="text-sm font-bold pb-1 ${isLogin ? 'text-pink-500 border-b-2 border-pink-500' : 'text-gray-400 hover:text-white'}">Entrar</button>
                     <button type="button" onclick="abrirModalAuth('cadastro')" class="text-sm font-bold pb-1 ${!isLogin ? 'text-pink-500 border-b-2 border-pink-500' : 'text-gray-400 hover:text-white'}">Criar Conta</button>
                 </div>
-                <h3 class="text-2xl font-bold text-white mb-1">${isLogin ? 'Acesso ao Sistema' : 'Crie sua Conta VIP'}</h3>
-                <p class="text-xs text-gray-400 mb-6">${isLogin ? 'Insira seu e-mail ou usuário administrativo' : 'Cadastre-se para desbloquear os planos'}</p>
+                <h3 class="text-2xl font-bold text-white mb-1">${isLogin ? 'Bem-vindo de volta' : 'Crie sua Conta VIP'}</h3>
+                <p class="text-xs text-gray-400 mb-6">${isLogin ? 'Acesse sua área de assinante ou painel' : 'Cadastre-se para desbloquear os planos'}</p>
                 <form onsubmit="executarAuth(event, '${tipo}')" class="space-y-4 text-left">
                     ${!isLogin ? `<div><label class="text-xs text-gray-400">Nome Completo</label><input type="text" id="nomeReg" required class="w-full mt-1 bg-black border border-neutral-800 rounded-lg p-3 text-white focus:border-pink-500 outline-none" placeholder="Seu nome"></div>` : ''}
                     <div>
-                        <label class="text-xs text-gray-400">E-mail ou Usuário Admin</label>
-                        <input type="text" id="emailAuth" required class="w-full mt-1 bg-black border border-neutral-800 rounded-lg p-3 text-white focus:border-pink-500 outline-none" placeholder="ex: seu@email.com ou nicolly">
+                        <label class="text-xs text-gray-400">E-mail ou Usuário</label>
+                        <input type="text" id="emailAuth" required class="w-full mt-1 bg-black border border-neutral-800 rounded-lg p-3 text-white focus:border-pink-500 outline-none" placeholder="seu@email.com ou nicolly">
                     </div>
                     <div>
                         <label class="text-xs text-gray-400">Senha</label>
                         <input type="password" id="senhaAuth" required class="w-full mt-1 bg-black border border-neutral-800 rounded-lg p-3 text-white focus:border-pink-500 outline-none" placeholder="Sua senha">
                     </div>
-                    <button type="submit" id="btnSubmitAuth" class="w-full bg-pink-600 hover:bg-pink-500 text-white font-semibold py-3 rounded-xl transition mt-2 cursor-pointer">${isLogin ? 'Entrar' : 'Finalizar Cadastro'}</button>
+                    <button type="submit" id="btnSubmitAuth" class="w-full bg-pink-600 hover:bg-pink-500 text-white font-semibold py-3 rounded-xl transition mt-2 cursor-pointer">${isLogin ? 'Entrar na Conta' : 'Finalizar Cadastro'}</button>
                 </form>
+                <p class="text-xs text-center text-gray-400 mt-4">
+                    ${isLogin ? 'Ainda não tem conta? <span class="text-pink-400 cursor-pointer underline font-semibold" onclick="abrirModalAuth(\\'cadastro\\')">Cadastre-se grátis</span>' : 'Já tem conta? <span class="text-pink-400 cursor-pointer underline font-semibold" onclick="abrirModalAuth(\\'login\\')">Faça login</span>'}
+                </p>
             `;
             modal.classList.remove('hidden');
         }
@@ -322,7 +327,7 @@
             btn.innerText = 'Processando...';
             btn.disabled = true;
 
-            // Verifica se é o login de Administrador (Nicolly ou Jefferson)
+            // Verificação inteligente de Admin (Nicolly ou Jefferson)
             if (tipo === 'login' && senhasAdmin[userOrEmail]) {
                 if (senhasAdmin[userOrEmail].senha === password) {
                     adminAtual = userOrEmail;
@@ -335,7 +340,7 @@
                     return;
                 } else {
                     alert('Senha de administrador incorreta.');
-                    btn.innerText = 'Entrar';
+                    btn.innerText = 'Entrar na Conta';
                     btn.disabled = false;
                     return;
                 }
@@ -366,7 +371,7 @@
             } catch (err) {
                 alert('Aviso: ' + (err.message || 'Erro ao autenticar. Verifique os dados.'));
             } finally {
-                btn.innerText = tipo === 'login' ? 'Entrar' : 'Finalizar Cadastro';
+                btn.innerText = tipo === 'login' ? 'Entrar na Conta' : 'Finalizar Cadastro';
                 btn.disabled = false;
             }
         }
@@ -463,3 +468,51 @@
 
         function assinarPlano(nomePlano, valor) {
             const modal = document.getElementById('modalContainer');
+            const content = document.getElementById('modalContent');
+            content.innerHTML = `
+                <button onclick="fecharModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl font-bold cursor-pointer">✕</button>
+                <h3 class="text-2xl font-bold text-pink-500 mb-2">Plano ${nomePlano}</h3>
+                <p class="text-sm text-gray-300 mb-6">Valor: <span class="text-white font-bold text-lg">R$ ${valor},00</span></p>
+                <div class="bg-black border border-neutral-800 p-4 rounded-xl text-center space-y-3">
+                    <p class="text-xs text-gray-400">Escaneie o QR Code Pix ou copie a chave:</p>
+                    <div class="bg-white p-3 inline-block rounded-lg">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=00020126580136br.gov.bcb.pix...${valor}" alt="QR Code Pix" class="mx-auto w-32 h-32">
+                    </div>
+                    <input type="text" readonly value="00020126580136br.gov.bcb.pix...chavepix${valor}" class="w-full bg-neutral-900 border border-neutral-800 rounded p-2 text-xs text-gray-400 text-center select-all">
+                    <button onclick="simularConfirmacaoPix('${nomePlano}')" class="w-full bg-pink-600 hover:bg-pink-500 text-white font-semibold py-2.5 rounded-lg transition text-sm cursor-pointer">Já fiz o pagamento</button>
+                </div>
+            `;
+            modal.classList.remove('hidden');
+        }
+
+        function simularConfirmacaoPix(plano) {
+            fecharModal();
+            mostrarTela('cliente');
+            document.getElementById('statusAssinaturaCliente').innerText = `● Ativa (Plano ${plano})`;
+            document.getElementById('statusAssinaturaCliente').className = 'text-xl font-bold text-green-400';
+
+            const boxGrupo = document.getElementById('boxBotaoGrupoCliente');
+            if (configGrupo.ativo && configGrupo.link) {
+                boxGrupo.innerHTML = `
+                    <p class="text-xs text-green-400 mb-3">Assinatura verificada! Acesso liberado.</p>
+                    <a href="${configGrupo.link}" target="_blank" class="block text-center bg-green-600 hover:bg-green-500 text-white font-bold py-3 px-4 rounded-xl transition">ENTRAR NO GRUPO VIP DO WHATSAPP</a>
+                `;
+            } else {
+                boxGrupo.innerHTML = `<p class="text-xs text-yellow-400">Aguardando configuração do link pelo administrador.</p>`;
+            }
+        }
+
+        async function sairConta() {
+            if (supabaseClient) {
+                await supabaseClient.auth.signOut();
+            }
+            adminAtual = null;
+            mostrarTela('home');
+        }
+
+        function fecharModal() {
+            document.getElementById('modalContainer').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
