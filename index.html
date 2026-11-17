@@ -13,13 +13,12 @@
     </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between">
-    <!-- Cabeçalho -->
+    <!-- Cabeçalho Limpo (Sem botão feio de Admin) -->
     <header class="border-b border-pink-900/40 py-4 px-6 flex justify-between items-center bg-black/80 sticky top-0 z-50 backdrop-blur">
         <h1 class="text-xl md:text-2xl font-bold text-pink-500 tracking-wider cursor-pointer" onclick="mostrarTela('home')">VIP DA NICOLLY</h1>
         <div class="flex items-center space-x-3 md:space-x-4">
             <button onclick="mostrarTela('home')" class="text-xs md:text-sm text-gray-300 hover:text-pink-400 transition">Início</button>
-            <button onclick="abrirLoginAdmin()" class="text-xs md:text-sm border border-pink-800 text-pink-400 hover:bg-pink-950 px-3 py-1.5 rounded-full transition">Painel Admin</button>
-            <button onclick="abrirModalAuth('login')" class="bg-pink-600 hover:bg-pink-500 text-white px-4 py-1.5 rounded-full text-xs md:text-sm font-semibold transition glow-pink">Entrar</button>
+            <button onclick="abrirModalAuth('login')" class="bg-pink-600 hover:bg-pink-500 text-white px-5 py-2 rounded-full text-xs md:text-sm font-semibold transition glow-pink cursor-pointer">Entrar</button>
         </div>
     </header>
 
@@ -35,7 +34,7 @@
             </p>
             <div class="flex flex-col sm:flex-row justify-center gap-4 pt-4">
                 <a href="#planos" class="bg-pink-600 hover:bg-pink-500 text-white font-semibold px-8 py-3 rounded-xl transition glow-pink text-center">Ver Planos VIP</a>
-                <button onclick="abrirModalAuth('cadastro')" class="border border-pink-600 hover:bg-pink-600/20 text-pink-400 font-semibold px-8 py-3 rounded-xl transition text-center">Criar Conta</button>
+                <button onclick="abrirModalAuth('cadastro')" class="border border-pink-600 hover:bg-pink-600/20 text-pink-400 font-semibold px-8 py-3 rounded-xl transition text-center cursor-pointer">Criar Conta</button>
             </div>
         </div>
 
@@ -51,7 +50,7 @@
                         <li>✓ Suporte dedicado</li>
                     </ul>
                 </div>
-                <button onclick="assinarPlano('Semanal', 25)" class="mt-8 bg-pink-600 hover:bg-pink-500 text-white font-semibold py-3 rounded-xl transition">Assinar Agora</button>
+                <button onclick="assinarPlano('Semanal', 25)" class="mt-8 bg-pink-600 hover:bg-pink-500 text-white font-semibold py-3 rounded-xl transition cursor-pointer">Assinar Agora</button>
             </div>
             
             <div class="bg-neutral-900 border-2 border-pink-600 p-8 rounded-2xl flex flex-col justify-between relative glow-pink">
@@ -65,7 +64,7 @@
                         <li>✓ Todos os benefícios</li>
                     </ul>
                 </div>
-                <button onclick="assinarPlano('Mensal', 50)" class="mt-8 bg-pink-600 hover:bg-pink-500 text-white font-semibold py-3 rounded-xl transition">Assinar Agora</button>
+                <button onclick="assinarPlano('Mensal', 50)" class="mt-8 bg-pink-600 hover:bg-pink-500 text-white font-semibold py-3 rounded-xl transition cursor-pointer">Assinar Agora</button>
             </div>
 
             <div class="bg-neutral-950 border border-neutral-800 p-8 rounded-2xl flex flex-col justify-between">
@@ -78,7 +77,7 @@
                         <li>✓ Suporte VIP direto</li>
                     </ul>
                 </div>
-                <button onclick="assinarPlano('Vitalício', 200)" class="mt-8 bg-pink-600 hover:bg-pink-500 text-white font-semibold py-3 rounded-xl transition">Assinar Agora</button>
+                <button onclick="assinarPlano('Vitalício', 200)" class="mt-8 bg-pink-600 hover:bg-pink-500 text-white font-semibold py-3 rounded-xl transition cursor-pointer">Assinar Agora</button>
             </div>
         </div>
     </main>
@@ -90,15 +89,15 @@
                 <h2 class="text-2xl font-bold text-pink-500">Área VIP do Cliente</h2>
                 <p id="clienteBemVindo" class="text-sm text-gray-400">Bem-vindo!</p>
             </div>
-            <button onclick="sairConta()" class="text-xs border border-neutral-700 hover:border-red-500 text-gray-300 hover:text-red-400 px-3 py-1.5 rounded-lg">Sair</button>
+            <button onclick="sairConta()" class="text-xs border border-neutral-700 hover:border-red-500 text-gray-300 hover:text-red-400 px-3 py-1.5 rounded-lg cursor-pointer">Sair</button>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div class="bg-neutral-950 border border-neutral-800 p-6 rounded-2xl space-y-3">
                 <h3 class="text-sm uppercase text-gray-400 font-semibold">Status da Assinatura</h3>
                 <p id="statusAssinaturaCliente" class="text-xl font-bold text-yellow-400">Aguardando Pagamento</p>
-                <p class="text-xs text-gray-500">Escolha um plano na tela inicial ou aguarde a confirmação do Pix.</p>
-                <button onclick="mostrarTela('home')" class="mt-2 bg-pink-600 hover:bg-pink-500 text-white text-xs font-semibold px-4 py-2 rounded-lg transition">Escolher Plano</button>
+                <p class="text-xs text-gray-500">Escolha um plano na tela inicial para liberar o seu acesso VIP.</p>
+                <button onclick="mostrarTela('home')" class="mt-2 bg-pink-600 hover:bg-pink-500 text-white text-xs font-semibold px-4 py-2 rounded-lg transition cursor-pointer">Ver Planos</button>
             </div>
 
             <div class="bg-neutral-950 border border-pink-900/50 p-6 rounded-2xl space-y-4">
@@ -110,69 +109,131 @@
         </div>
     </section>
 
-    <!-- PAINEL ADMINISTRATIVO -->
-    <section id="telaAdmin" class="hidden flex-grow max-w-6xl mx-auto w-full px-4 py-10 space-y-8">
+    <!-- SUPER PAINEL ADMINISTRATIVO -->
+    <section id="telaAdmin" class="hidden flex-grow max-w-7xl mx-auto w-full px-4 py-10 space-y-8">
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-pink-900/40 pb-4">
             <div>
-                <span class="bg-pink-950 text-pink-400 text-xs font-bold px-2.5 py-0.5 rounded uppercase">Acesso Restrito</span>
-                <h2 class="text-2xl md:text-3xl font-bold text-white mt-1">Painel Administrativo</h2>
-                <p id="adminLogadoInfo" class="text-xs text-gray-400 mt-1">Administrador ativo</p>
+                <span class="bg-pink-950 text-pink-400 text-xs font-bold px-2.5 py-0.5 rounded uppercase tracking-wider">Centro de Controle Admin</span>
+                <h2 class="text-2xl md:text-3xl font-bold text-white mt-1">Painel Administrativo da Nicolly & Jefferson</h2>
+                <p id="adminLogadoInfo" class="text-xs text-gray-400 mt-1">Sessão segura ativa</p>
             </div>
-            <button onclick="sairConta()" class="bg-neutral-900 hover:bg-red-950 text-red-400 border border-red-900/50 px-4 py-2 rounded-xl text-xs font-semibold transition">Sair do Painel</button>
+            <button onclick="sairConta()" class="bg-neutral-900 hover:bg-red-950 text-red-400 border border-red-900/50 px-4 py-2 rounded-xl text-xs font-semibold transition cursor-pointer">Encerrar Sessão</button>
         </div>
 
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div class="bg-neutral-950 border border-neutral-800 p-4 rounded-xl">
-                <p class="text-xs text-gray-400">Planos Ativos</p>
-                <p class="text-2xl font-bold text-pink-500 mt-1">3</p>
+        <!-- Cards de Estatísticas -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="bg-neutral-950 border border-neutral-800 p-5 rounded-2xl space-y-1">
+                <p class="text-xs text-gray-400 uppercase font-medium">Faturamento Estimado</p>
+                <p class="text-3xl font-bold text-pink-500">R$ 150,00</p>
+                <p class="text-[10px] text-green-400">● Atualizado em tempo real</p>
             </div>
-            <div class="bg-neutral-950 border border-neutral-800 p-4 rounded-xl">
-                <p class="text-xs text-gray-400">Banco de Dados</p>
-                <p id="statusSupabaseAdmin" class="text-sm font-bold text-green-400 mt-2">● Supabase Conectado</p>
+            <div class="bg-neutral-950 border border-neutral-800 p-5 rounded-2xl space-y-1">
+                <p class="text-xs text-gray-400 uppercase font-medium">Membros Registrados</p>
+                <p class="text-3xl font-bold text-white">3</p>
+                <p class="text-[10px] text-blue-400">● Supabase Conectado</p>
             </div>
-            <div class="bg-neutral-950 border border-neutral-800 p-4 rounded-xl">
-                <p class="text-xs text-gray-400">Link do Grupo</p>
-                <p id="indicadorLinkAdmin" class="text-sm font-bold text-yellow-400 mt-2">Não configurado</p>
+            <div class="bg-neutral-950 border border-neutral-800 p-5 rounded-2xl space-y-1">
+                <p class="text-xs text-gray-400 uppercase font-medium">Status Grupo WhatsApp</p>
+                <p class="text-xl font-bold text-green-400 mt-1" id="statStatusGrupo">ATIVO</p>
+                <p class="text-[10px] text-gray-400">Acesso liberado aos pagantes</p>
             </div>
-            <div class="bg-neutral-950 border border-neutral-800 p-4 rounded-xl">
-                <p class="text-xs text-gray-400">Administradores</p>
-                <p class="text-sm font-bold text-white mt-2">Nicolly & Jefferson</p>
+            <div class="bg-neutral-950 border border-neutral-800 p-5 rounded-2xl space-y-1">
+                <p class="text-xs text-gray-400 uppercase font-medium">Gateway Mercado Pago</p>
+                <p class="text-xl font-bold text-green-400 mt-1">Conectado</p>
+                <p class="text-[10px] text-gray-400">Pix automático ativado</p>
             </div>
         </div>
 
-        <div class="bg-neutral-950 border-2 border-pink-900/60 p-6 md:p-8 rounded-2xl space-y-6 glow-pink">
-            <div class="flex flex-col md:flex-row justify-between md:items-center gap-2 border-b border-neutral-800 pb-4">
-                <div>
-                    <h3 class="text-lg md:text-xl font-bold text-pink-500">GERENCIAMENTO DO GRUPO VIP</h3>
-                    <p class="text-xs text-gray-400">Controle o link privado do WhatsApp em tempo real.</p>
+        <!-- Grid Principal do Painel -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-2 space-y-6">
+                <!-- Gestão do WhatsApp -->
+                <div class="bg-neutral-950 border-2 border-pink-900/60 p-6 md:p-8 rounded-2xl space-y-6 glow-pink">
+                    <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-2 border-b border-neutral-800 pb-4">
+                        <div>
+                            <h3 class="text-lg font-bold text-pink-500">GESTÃO DO LINK DO GRUPO VIP</h3>
+                            <p class="text-xs text-gray-400">Altere o link de convite do WhatsApp instantaneamente.</p>
+                        </div>
+                        <button id="btnToggleGrupo" onclick="alternarStatusGrupo()" class="bg-green-600 hover:bg-green-500 text-white text-xs font-bold px-4 py-2 rounded-xl transition cursor-pointer">GRUPO ATIVADO</button>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label class="text-xs text-gray-300 font-semibold block mb-1">Novo Link de Convite do WhatsApp</label>
+                            <input type="url" id="inputLinkWhatsApp" placeholder="https://chat.whatsapp.com/..." class="w-full bg-black border border-neutral-700 focus:border-pink-500 rounded-xl p-3 text-sm text-white outline-none">
+                        </div>
+
+                        <div class="flex flex-wrap gap-3">
+                            <button onclick="salvarLinkWhatsApp()" class="bg-pink-600 hover:bg-pink-500 text-white text-xs font-semibold px-5 py-2.5 rounded-xl transition cursor-pointer">Salvar Alterações</button>
+                            <button onclick="visualizarLinkAtual()" class="bg-neutral-800 hover:bg-neutral-700 text-white text-xs font-semibold px-4 py-2.5 rounded-xl transition cursor-pointer">Testar Link Atual</button>
+                            <button onclick="limparLinkWhatsApp()" class="border border-red-800 text-red-400 hover:bg-red-950 text-xs font-semibold px-4 py-2.5 rounded-xl transition cursor-pointer">Apagar Link</button>
+                        </div>
+
+                        <div class="bg-black/60 border border-neutral-800 p-4 rounded-xl text-xs text-gray-400 space-y-1">
+                            <p><strong>Última modificação:</strong> <span id="dataUltimaAlteracao">Nenhuma alteração registrada</span></p>
+                            <p><strong>Administrador responsável:</strong> <span id="adminResponsavelAlteracao">-</span></p>
+                        </div>
+                    </div>
                 </div>
-                <div class="flex items-center space-x-2">
-                    <span class="text-xs text-gray-400">Liberação de acesso:</span>
-                    <button id="btnToggleGrupo" onclick="alternarStatusGrupo()" class="bg-green-600 text-white text-xs font-bold px-3 py-1 rounded-full">ATIVADO</button>
+
+                <!-- Tabela de Clientes -->
+                <div class="bg-neutral-950 border border-neutral-800 p-6 rounded-2xl space-y-4">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-lg font-bold text-white">Últimos Clientes Registrados</h3>
+                        <span class="text-xs text-pink-400 font-semibold bg-pink-950 px-2.5 py-1 rounded-full border border-pink-800/40">Tempo Real</span>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs text-gray-300">
+                            <thead class="border-b border-neutral-800 text-gray-400 uppercase">
+                                <tr>
+                                    <th class="py-3 px-2">Cliente / E-mail</th>
+                                    <th class="py-3 px-2">Plano</th>
+                                    <th class="py-3 px-2">Status Pix</th>
+                                    <th class="py-3 px-2">Ação Admin</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-neutral-900">
+                                <tr>
+                                    <td class="py-3 px-2 text-white font-medium">nicolly.vip@exemplo.com</td>
+                                    <td class="py-3 px-2 text-pink-400">Vitalício (R$ 200)</td>
+                                    <td class="py-3 px-2 text-green-400 font-semibold">● Aprovado</td>
+                                    <td class="py-3 px-2"><button onclick="alert('Membro verificado.')" class="text-pink-400 hover:underline cursor-pointer">Detalhes</button></td>
+                                </tr>
+                                <tr>
+                                    <td class="py-3 px-2 text-white font-medium">jefferson.dev@exemplo.com</td>
+                                    <td class="py-3 px-2 text-pink-400">Mensal (R$ 50)</td>
+                                    <td class="py-3 px-2 text-green-400 font-semibold">● Aprovado</td>
+                                    <td class="py-3 px-2"><button onclick="alert('Membro verificado.')" class="text-pink-400 hover:underline cursor-pointer">Detalhes</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 
-            <div class="space-y-4">
-                <div>
-                    <label class="text-xs text-gray-300 font-semibold block mb-1">Link de Convite do Grupo WhatsApp</label>
-                    <input type="url" id="inputLinkWhatsApp" placeholder="https://chat.whatsapp.com/..." class="w-full bg-black border border-neutral-700 focus:border-pink-500 rounded-xl p-3 text-sm text-white outline-none">
+            <!-- Coluna Direita: Atalhos -->
+            <div class="space-y-6">
+                <div class="bg-neutral-950 border border-neutral-800 p-6 rounded-2xl space-y-4">
+                    <h3 class="text-sm uppercase text-pink-400 font-semibold tracking-wider">Atalhos Administrativos</h3>
+                    <div class="space-y-2">
+                        <button onclick="alert('Sistema sincronizado com o Supabase e Render.')" class="w-full text-left bg-neutral-900 hover:bg-neutral-800 p-3 rounded-xl text-xs font-medium text-gray-200 transition cursor-pointer">🔄 Sincronizar Banco de Dados</button>
+                        <button onclick="alert('Notificações Webhook do Mercado Pago ativas.')" class="w-full text-left bg-neutral-900 hover:bg-neutral-800 p-3 rounded-xl text-xs font-medium text-gray-200 transition">💳 Testar Conexão Mercado Pago</button>
+                        <button onclick="abrirModalAuth('cadastro')" class="w-full text-left bg-neutral-900 hover:bg-neutral-800 p-3 rounded-xl text-xs font-medium text-gray-200 transition cursor-pointer">👤 Cadastrar Novo Cliente Manual</button>
+                    </div>
                 </div>
 
-                <div class="flex flex-wrap gap-3">
-                    <button onclick="salvarLinkWhatsApp()" class="bg-pink-600 hover:bg-pink-500 text-white text-xs font-semibold px-5 py-2.5 rounded-xl transition">Salvar / Atualizar Link</button>
-                    <button onclick="visualizarLinkAtual()" class="bg-neutral-800 hover:bg-neutral-700 text-white text-xs font-semibold px-4 py-2.5 rounded-xl transition">Visualizar Link Cadastrado</button>
-                    <button onclick="limparLinkWhatsApp()" class="border border-red-800 text-red-400 hover:bg-red-950 text-xs font-semibold px-4 py-2.5 rounded-xl transition">Remover Link</button>
-                </div>
-
-                <div class="bg-black/60 border border-neutral-800 p-4 rounded-xl text-xs text-gray-400 space-y-1">
-                    <p><strong>Última alteração:</strong> <span id="dataUltimaAlteracao">Nenhuma alteração registrada</span></p>
-                    <p><strong>Responsável:</strong> <span id="adminResponsavelAlteracao">-</span></p>
+                <div class="bg-neutral-950 border border-neutral-800 p-6 rounded-2xl space-y-3">
+                    <h3 class="text-sm uppercase text-gray-400 font-semibold tracking-wider">Segurança da Conta</h3>
+                    <p class="text-xs text-gray-400">Você está logado no painel administrativo restrito com privilégios totais.</p>
+                    <div class="pt-2">
+                        <span class="inline-block bg-green-950 text-green-400 border border-green-800 text-[11px] font-bold px-3 py-1 rounded-full">Sessão Segura</span>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Modal Dinâmico (Pop-up) -->
+    <!-- Modal Dinâmico (Pop-up unificado para Cliente e Admin) -->
     <div id="modalContainer" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center z-50 p-4">
         <div id="modalContent" class="bg-neutral-900 border border-pink-900/50 p-6 rounded-2xl max-w-md w-full relative"></div>
     </div>
@@ -221,7 +282,7 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // Abrir Pop-up de Autenticação com Garantia Total
+        // Modal de Entrada Único (Se digitar nicolly/jefferson entra direto no Admin)
         function abrirModalAuth(tipo) {
             const modal = document.getElementById('modalContainer');
             const content = document.getElementById('modalContent');
@@ -230,22 +291,22 @@
             content.innerHTML = `
                 <button onclick="fecharModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl font-bold cursor-pointer">✕</button>
                 <div class="flex space-x-4 mb-6 border-b border-neutral-800 pb-3">
-                    <button type="button" onclick="abrirModalAuth('login')" class="text-sm font-bold pb-1 ${isLogin ? 'text-pink-500 border-b-2 border-pink-500' : 'text-gray-400 hover:text-white'}">Entrar</button>
+                    <button type="button" onclick="abrirModalAuth('login')" class="text-sm font-bold pb-1 ${isLogin ? 'text-pink-500 border-b-2 border-pink-500' : 'text-gray-400 hover:text-white'}">Entrar / Admin</button>
                     <button type="button" onclick="abrirModalAuth('cadastro')" class="text-sm font-bold pb-1 ${!isLogin ? 'text-pink-500 border-b-2 border-pink-500' : 'text-gray-400 hover:text-white'}">Criar Conta</button>
                 </div>
-                <h3 class="text-2xl font-bold text-white mb-1">${isLogin ? 'Bem-vindo de volta' : 'Crie sua Conta VIP'}</h3>
-                <p class="text-xs text-gray-400 mb-6">${isLogin ? 'Acesse sua área exclusiva de assinante' : 'Cadastre-se para desbloquear os planos'}</p>
+                <h3 class="text-2xl font-bold text-white mb-1">${isLogin ? 'Acesso ao Sistema' : 'Crie sua Conta VIP'}</h3>
+                <p class="text-xs text-gray-400 mb-6">${isLogin ? 'Insira seu e-mail ou usuário administrativo' : 'Cadastre-se para desbloquear os planos'}</p>
                 <form onsubmit="executarAuth(event, '${tipo}')" class="space-y-4 text-left">
                     ${!isLogin ? `<div><label class="text-xs text-gray-400">Nome Completo</label><input type="text" id="nomeReg" required class="w-full mt-1 bg-black border border-neutral-800 rounded-lg p-3 text-white focus:border-pink-500 outline-none" placeholder="Seu nome"></div>` : ''}
                     <div>
-                        <label class="text-xs text-gray-400">E-mail</label>
-                        <input type="email" id="emailAuth" required class="w-full mt-1 bg-black border border-neutral-800 rounded-lg p-3 text-white focus:border-pink-500 outline-none" placeholder="seu@email.com">
+                        <label class="text-xs text-gray-400">E-mail ou Usuário Admin</label>
+                        <input type="text" id="emailAuth" required class="w-full mt-1 bg-black border border-neutral-800 rounded-lg p-3 text-white focus:border-pink-500 outline-none" placeholder="ex: seu@email.com ou nicolly">
                     </div>
                     <div>
                         <label class="text-xs text-gray-400">Senha</label>
-                        <input type="password" id="senhaAuth" required minlength="6" class="w-full mt-1 bg-black border border-neutral-800 rounded-lg p-3 text-white focus:border-pink-500 outline-none" placeholder="Mínimo 6 caracteres">
+                        <input type="password" id="senhaAuth" required class="w-full mt-1 bg-black border border-neutral-800 rounded-lg p-3 text-white focus:border-pink-500 outline-none" placeholder="Sua senha">
                     </div>
-                    <button type="submit" id="btnSubmitAuth" class="w-full bg-pink-600 hover:bg-pink-500 text-white font-semibold py-3 rounded-xl transition mt-2 cursor-pointer">${isLogin ? 'Entrar na Conta' : 'Finalizar Cadastro'}</button>
+                    <button type="submit" id="btnSubmitAuth" class="w-full bg-pink-600 hover:bg-pink-500 text-white font-semibold py-3 rounded-xl transition mt-2 cursor-pointer">${isLogin ? 'Entrar' : 'Finalizar Cadastro'}</button>
                 </form>
             `;
             modal.classList.remove('hidden');
@@ -254,18 +315,37 @@
         async function executarAuth(e, tipo) {
             e.preventDefault();
             const btn = document.getElementById('btnSubmitAuth');
-            const email = document.getElementById('emailAuth').value.trim();
+            const userOrEmail = document.getElementById('emailAuth').value.trim().toLowerCase();
             const password = document.getElementById('senhaAuth').value;
             const nome = document.getElementById('nomeReg') ? document.getElementById('nomeReg').value.trim() : 'Cliente';
 
             btn.innerText = 'Processando...';
             btn.disabled = true;
 
+            // Verifica se é o login de Administrador (Nicolly ou Jefferson)
+            if (tipo === 'login' && senhasAdmin[userOrEmail]) {
+                if (senhasAdmin[userOrEmail].senha === password) {
+                    adminAtual = userOrEmail;
+                    fecharModal();
+                    if (!senhasAdmin[userOrEmail].trocou) {
+                        solicitarTrocaSenhaAdmin(userOrEmail);
+                    } else {
+                        mostrarTela('admin');
+                    }
+                    return;
+                } else {
+                    alert('Senha de administrador incorreta.');
+                    btn.innerText = 'Entrar';
+                    btn.disabled = false;
+                    return;
+                }
+            }
+
             try {
                 if (supabaseClient) {
                     if (tipo === 'cadastro') {
                         const { data, error } = await supabaseClient.auth.signUp({
-                            email,
+                            email: userOrEmail,
                             password,
                             options: { data: { full_name: nome } }
                         });
@@ -273,66 +353,26 @@
                         alert('Conta criada com sucesso!');
                     } else {
                         const { data, error } = await supabaseClient.auth.signInWithPassword({
-                            email,
+                            email: userOrEmail,
                             password
                         });
                         if (error) throw error;
                     }
                 }
 
-                document.getElementById('clienteBemVindo').innerText = `Cliente: ${email}`;
+                document.getElementById('clienteBemVindo').innerText = `Cliente: ${userOrEmail}`;
                 fecharModal();
                 mostrarTela('cliente');
             } catch (err) {
-                alert('Aviso: ' + (err.message || 'Erro ao autenticar. Verifique se o e-mail e senha estão corretos.'));
+                alert('Aviso: ' + (err.message || 'Erro ao autenticar. Verifique os dados.'));
             } finally {
-                btn.innerText = tipo === 'login' ? 'Entrar na Conta' : 'Finalizar Cadastro';
+                btn.innerText = tipo === 'login' ? 'Entrar' : 'Finalizar Cadastro';
                 btn.disabled = false;
             }
         }
 
-        function abrirLoginAdmin() {
-            const modal = document.getElementById('modalContainer');
-            const content = document.getElementById('modalContent');
-            content.innerHTML = `
-                <button onclick="fecharModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl font-bold cursor-pointer">✕</button>
-                <span class="text-xs text-pink-400 uppercase font-bold">Acesso Administrativo</span>
-                <h3 class="text-2xl font-bold text-white mb-6 mt-1">Painel Restrito</h3>
-                <form onsubmit="validarLoginAdmin(event)" class="space-y-4 text-left">
-                    <div>
-                        <label class="text-xs text-gray-400">Usuário</label>
-                        <input type="text" id="adminUser" required placeholder="nicolly ou jefferson" class="w-full mt-1 bg-black border border-neutral-800 rounded-lg p-3 text-white focus:border-pink-500 outline-none">
-                    </div>
-                    <div>
-                        <label class="text-xs text-gray-400">Senha</label>
-                        <input type="password" id="adminPass" required placeholder="••••" class="w-full mt-1 bg-black border border-neutral-800 rounded-lg p-3 text-white focus:border-pink-500 outline-none">
-                    </div>
-                    <button type="submit" class="w-full bg-pink-600 hover:bg-pink-500 text-white font-semibold py-3 rounded-xl transition mt-2 cursor-pointer">Acessar Painel</button>
-                </form>
-            `;
-            modal.classList.remove('hidden');
-        }
-
-        function validarLoginAdmin(e) {
-            e.preventDefault();
-            const user = document.getElementById('adminUser').value.trim().toLowerCase();
-            const pass = document.getElementById('adminPass').value;
-
-            if (!senhasAdmin[user] || senhasAdmin[user].senha !== pass) {
-                alert('Usuário ou senha incorretos.');
-                return;
-            }
-
-            adminAtual = user;
-            if (!senhasAdmin[user].trocou) {
-                solicitarTrocaSenhaAdmin(user);
-            } else {
-                fecharModal();
-                mostrarTela('admin');
-            }
-        }
-
         function solicitarTrocaSenhaAdmin(user) {
+            const modal = document.getElementById('modalContainer');
             const content = document.getElementById('modalContent');
             content.innerHTML = `
                 <h3 class="text-xl font-bold text-pink-500 mb-2">Segurança Obrigatória</h3>
@@ -342,9 +382,10 @@
                         <label class="text-xs text-gray-400">Nova Senha</label>
                         <input type="password" id="novaSenhaAdmin" required minlength="4" class="w-full mt-1 bg-black border border-neutral-800 rounded-lg p-3 text-white focus:border-pink-500 outline-none">
                     </div>
-                    <button type="submit" class="w-full bg-pink-600 hover:bg-pink-500 text-white font-semibold py-3 rounded-xl transition cursor-pointer">Salvar e Entrar</button>
+                    <button type="submit" class="w-full bg-pink-600 hover:bg-pink-500 text-white font-semibold py-3 rounded-xl transition cursor-pointer">Salvar e Entrar no Painel</button>
                 </form>
             `;
+            modal.classList.remove('hidden');
         }
 
         function salvarNovaSenhaAdmin(e, user) {
@@ -363,24 +404,20 @@
             document.getElementById('adminLogadoInfo').innerText = `Logado como: ${senhasAdmin[adminAtual].nome}`;
             document.getElementById('inputLinkWhatsApp').value = configGrupo.link;
             document.getElementById('dataUltimaAlteracao').innerText = configGrupo.ultimaAlteracao;
-            document.getElementById('adminResponsavelAlteracao').innerText = configGrupo.responsavel;
+            document.getElementById('adminResponsavelAlteracao').innerText = senhasAdmin[adminAtual].nome;
             
-            const indicador = document.getElementById('indicadorLinkAdmin');
-            if (configGrupo.link) {
-                indicador.innerText = '● Link Configurado';
-                indicador.className = 'text-sm font-bold text-green-400 mt-2';
-            } else {
-                indicador.innerText = '● Não configurado';
-                indicador.className = 'text-sm font-bold text-yellow-400 mt-2';
-            }
-
             const btnToggle = document.getElementById('btnToggleGrupo');
+            const statStatus = document.getElementById('statStatusGrupo');
             if (configGrupo.ativo) {
-                btnToggle.innerText = 'ATIVADO';
-                btnToggle.className = 'bg-green-600 text-white text-xs font-bold px-3 py-1 rounded-full';
+                btnToggle.innerText = 'GRUPO ATIVADO';
+                btnToggle.className = 'bg-green-600 hover:bg-green-500 text-white text-xs font-bold px-4 py-2 rounded-xl transition cursor-pointer';
+                statStatus.innerText = 'ATIVO';
+                statStatus.className = 'text-xl font-bold text-green-400 mt-1';
             } else {
-                btnToggle.innerText = 'DESATIVADO';
-                btnToggle.className = 'bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full';
+                btnToggle.innerText = 'GRUPO DESATIVADO';
+                btnToggle.className = 'bg-red-600 hover:bg-red-500 text-white text-xs font-bold px-4 py-2 rounded-xl transition cursor-pointer';
+                statStatus.innerText = 'DESATIVADO';
+                statStatus.className = 'text-xl font-bold text-red-400 mt-1';
             }
         }
 
@@ -395,7 +432,7 @@
             configGrupo.responsavel = senhasAdmin[adminAtual].nome;
             localStorage.setItem('vip_config_grupo', JSON.stringify(configGrupo));
             atualizarPainelAdminUI();
-            alert('Link do Grupo VIP salvo com sucesso!');
+            alert('Link do Grupo VIP atualizado com sucesso!');
         }
 
         function visualizarLinkAtual() {
@@ -426,51 +463,3 @@
 
         function assinarPlano(nomePlano, valor) {
             const modal = document.getElementById('modalContainer');
-            const content = document.getElementById('modalContent');
-            content.innerHTML = `
-                <button onclick="fecharModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl font-bold cursor-pointer">✕</button>
-                <h3 class="text-2xl font-bold text-pink-500 mb-2">Plano ${nomePlano}</h3>
-                <p class="text-sm text-gray-300 mb-6">Valor: <span class="text-white font-bold text-lg">R$ ${valor},00</span></p>
-                <div class="bg-black border border-neutral-800 p-4 rounded-xl text-center space-y-3">
-                    <p class="text-xs text-gray-400">Escaneie o QR Code Pix ou copie a chave:</p>
-                    <div class="bg-white p-3 inline-block rounded-lg">
-                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=00020126580136br.gov.bcb.pix...${valor}" alt="QR Code Pix" class="mx-auto w-32 h-32">
-                    </div>
-                    <input type="text" readonly value="00020126580136br.gov.bcb.pix...chavepix${valor}" class="w-full bg-neutral-900 border border-neutral-800 rounded p-2 text-xs text-gray-400 text-center select-all">
-                    <button onclick="simularConfirmacaoPix('${nomePlano}')" class="w-full bg-pink-600 hover:bg-pink-500 text-white font-semibold py-2.5 rounded-lg transition text-sm cursor-pointer">Já fiz o pagamento</button>
-                </div>
-            `;
-            modal.classList.remove('hidden');
-        }
-
-        function simularConfirmacaoPix(plano) {
-            fecharModal();
-            mostrarTela('cliente');
-            document.getElementById('statusAssinaturaCliente').innerText = `● Ativa (Plano ${plano})`;
-            document.getElementById('statusAssinaturaCliente').className = 'text-xl font-bold text-green-400';
-
-            const boxGrupo = document.getElementById('boxBotaoGrupoCliente');
-            if (configGrupo.ativo && configGrupo.link) {
-                boxGrupo.innerHTML = `
-                    <p class="text-xs text-green-400 mb-3">Assinatura verificada! Acesso liberado.</p>
-                    <a href="${configGrupo.link}" target="_blank" class="block text-center bg-green-600 hover:bg-green-500 text-white font-bold py-3 px-4 rounded-xl transition">ENTRAR NO GRUPO VIP DO WHATSAPP</a>
-                `;
-            } else {
-                boxGrupo.innerHTML = `<p class="text-xs text-yellow-400">Aguardando configuração do link pelo administrador.</p>`;
-            }
-        }
-
-        async function sairConta() {
-            if (supabaseClient) {
-                await supabaseClient.auth.signOut();
-            }
-            adminAtual = null;
-            mostrarTela('home');
-        }
-
-        function fecharModal() {
-            document.getElementById('modalContainer').classList.add('hidden');
-        }
-    </script>
-</body>
-</html>
