@@ -8,42 +8,35 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #030305; color: #f3f4f6; overflow-x: hidden; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #030305; color: #f3f4f6; overflow-x: hidden; user-select: none; -webkit-user-select: none; }
         .glass-card { background: rgba(15, 15, 18, 0.85); backdrop-filter: blur(20px); border: 1px solid rgba(236, 72, 153, 0.15); }
         .glass-nav { background: rgba(3, 3, 5, 0.9); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(236, 72, 153, 0.1); }
         .glow-pink { box-shadow: 0 0 40px rgba(236, 72, 153, 0.2); }
         .glow-pink-strong { box-shadow: 0 0 60px rgba(236, 72, 153, 0.35); }
         .text-gradient { background: linear-gradient(135deg, #ec4899 0%, #f472b6 50%, #c084fc 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .blur-preview { filter: blur(12px); transition: filter 0.3s ease; }
-        .blur-preview:hover { filter: blur(4px); }
     </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between selection:bg-pink-600 selection:text-white">
+<body class="min-h-screen flex flex-col justify-between selection:bg-pink-600 selection:text-white" oncontextmenu="return false;">
 
     <!-- MODAL DE VERIFICAÇÃO DE IDADE (18+) -->
     <div id="modalIdade" class="fixed inset-0 bg-black/95 backdrop-blur-2xl hidden items-center justify-center z-50 p-4" style="display: flex;">
         <div class="glass-card p-8 rounded-3xl max-w-md w-full text-center space-y-6 shadow-2xl relative glow-pink-strong">
-            <div class="w-16 h-16 bg-pink-950/60 border border-pink-700/50 rounded-2xl flex items-center justify-center mx-auto text-pink-400 text-2xl font-black shadow-inner">
-                18+
-            </div>
+            <div class="w-16 h-16 bg-pink-950/60 border border-pink-700/50 rounded-2xl flex items-center justify-center mx-auto text-pink-400 text-2xl font-black">18+</div>
             <div class="space-y-2">
                 <h3 class="text-2xl font-bold text-white tracking-tight">Conteúdo Restrito</h3>
-                <p class="text-xs text-gray-400 leading-relaxed">
-                    Este portal contém mídias e conteúdos exclusivos para maiores de idade. Confirme sua data de nascimento para continuar.
-                </p>
+                <p class="text-xs text-gray-400 leading-relaxed">Confirme sua data de nascimento para continuar.</p>
             </div>
-
             <div class="grid grid-cols-3 gap-2 text-left">
                 <div>
-                    <label class="text-[10px] text-gray-400 font-black uppercase tracking-wider">Dia</label>
-                    <select id="valDia" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl p-3 text-xs text-white focus:border-pink-500 outline-none transition">
+                    <label class="text-[10px] text-gray-400 font-black uppercase">Dia</label>
+                    <select id="valDia" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl p-3 text-xs text-white outline-none">
                         <option value="">Dia</option>
                         <script>for(let i=1; i<=31; i++) document.write(`<option value="${i}">${i < 10 ? '0'+i : i}</option>`);</script>
                     </select>
                 </div>
                 <div>
-                    <label class="text-[10px] text-gray-400 font-black uppercase tracking-wider">Mês</label>
-                    <select id="valMes" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl p-3 text-xs text-white focus:border-pink-500 outline-none transition">
+                    <label class="text-[10px] text-gray-400 font-black uppercase">Mês</label>
+                    <select id="valMes" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl p-3 text-xs text-white outline-none">
                         <option value="">Mês</option>
                         <option value="1">Jan</option><option value="2">Fev</option><option value="3">Mar</option><option value="4">Abr</option>
                         <option value="5">Mai</option><option value="6">Jun</option><option value="7">Jul</option><option value="8">Ago</option>
@@ -51,35 +44,29 @@
                     </select>
                 </div>
                 <div>
-                    <label class="text-[10px] text-gray-400 font-black uppercase tracking-wider">Ano</label>
-                    <select id="valAno" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl p-3 text-xs text-white focus:border-pink-500 outline-none transition">
+                    <label class="text-[10px] text-gray-400 font-black uppercase">Ano</label>
+                    <select id="valAno" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl p-3 text-xs text-white outline-none">
                         <option value="">Ano</option>
                         <script>let a=new Date().getFullYear(); for(let i=a; i>=1940; i--) document.write(`<option value="${i}">${i}</option>`);</script>
                     </select>
                 </div>
             </div>
-
-            <button onclick="verificarIdadeData()" class="w-full bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 text-white font-bold py-3.5 rounded-xl transition-all duration-300 cursor-pointer text-sm shadow-lg glow-pink">
-                Entrar no Site
-            </button>
-
-            <p id="erroIdade" class="text-xs text-rose-400 hidden font-semibold">
-                Acesso negado. É necessário ter pelo menos 18 anos.
-            </p>
+            <button onclick="verificarIdadeData()" class="w-full bg-gradient-to-r from-pink-600 to-rose-600 text-white font-bold py-3.5 rounded-xl cursor-pointer text-sm shadow-lg glow-pink">Entrar na Plataforma</button>
+            <p id="erroIdade" class="text-xs text-rose-400 hidden font-semibold">Acesso negado. Necessário 18 anos ou mais.</p>
         </div>
     </div>
 
     <!-- CABEÇALHO -->
     <header class="glass-nav py-4 px-6 md:px-12 flex justify-between items-center sticky top-0 z-40">
-        <div class="flex items-center space-x-3 cursor-pointer group" onclick="mostrarTela('home')">
-            <div class="w-3 h-3 bg-pink-500 rounded-full shadow-lg shadow-pink-500/50 animate-pulse"></div>
+        <div class="flex items-center space-x-3 cursor-pointer" onclick="mostrarTela('home')">
+            <div class="w-3 h-3 bg-pink-500 rounded-full animate-pulse"></div>
             <h1 class="text-base md:text-lg font-black tracking-widest text-white uppercase">VIP DA <span class="text-gradient">NICOLLY</span></h1>
         </div>
         <div class="flex items-center space-x-3 md:space-x-5">
-            <button onclick="mostrarTela('home')" class="text-xs md:text-sm text-gray-300 hover:text-pink-400 transition font-medium">Início</button>
-            <a href="#galeria" class="text-xs md:text-sm text-gray-300 hover:text-pink-400 transition font-medium hidden sm:inline-block">Prévia</a>
-            <a href="#planos" class="text-xs md:text-sm text-gray-300 hover:text-pink-400 transition font-medium hidden sm:inline-block">Planos</a>
-            <button onclick="abrirModalAuth('login')" class="bg-pink-600 hover:bg-pink-500 text-white px-5 py-2.5 rounded-full text-xs md:text-sm font-bold transition-all duration-300 glow-pink cursor-pointer shadow-md">Entrar</button>
+            <button onclick="mostrarTela('home')" class="text-xs md:text-sm text-gray-300 hover:text-pink-400 transition cursor-pointer">Início</button>
+            <button onclick="abrirPainelAdminSeguro()" class="text-xs text-pink-400 font-semibold border border-pink-500/30 px-3 py-1.5 rounded-xl hover:bg-pink-500/10 transition cursor-pointer">Admin</button>
+            <button onclick="abrirModalAuth('login')" class="text-xs text-pink-400 font-semibold border border-pink-500/30 px-3 py-1.5 rounded-xl hover:bg-pink-500/10 transition cursor-pointer">Entrar</button>
+            <button onclick="abrirModalAuth('cadastro')" class="bg-pink-600 hover:bg-pink-500 text-white px-5 py-2.5 rounded-full text-xs md:text-sm font-bold transition glow-pink cursor-pointer">Criar Conta</button>
         </div>
     </header>
 
@@ -87,64 +74,16 @@
     <main id="telaHome" class="flex-grow flex flex-col items-center justify-center text-center px-4 py-16 md:py-24">
         <div class="max-w-4xl mx-auto space-y-8">
             <div class="inline-flex items-center space-x-2 bg-pink-950/40 border border-pink-800/40 px-4 py-2 rounded-full text-pink-400 text-xs font-bold uppercase tracking-widest glow-pink">
-                <span>✦ Canal Oficial Verificado & Supabase Auth</span>
+                <span>✦ API Render & Supabase Integrados</span>
             </div>
-            
             <h2 class="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight text-white leading-none">
-                O melhor conteúdo <br class="hidden sm:inline"><span class="text-gradient">Direto com a Nicolly</span>
+                Comunidade Exclusiva <br class="hidden sm:inline"><span class="text-gradient">Direto com a Nicolly</span>
             </h2>
-            
             <p class="text-gray-400 text-base md:text-lg max-w-2xl mx-auto font-light leading-relaxed">
-                Posts diários sem censura, áudios exclusivos, ensaios fotográficos e acesso direto ao nosso grupo VIP fechado no WhatsApp.
+                Acesso direto ao nosso grupo VIP fechado no WhatsApp, transmissões e interação diária.
             </p>
-
             <div class="flex flex-col sm:flex-row justify-center items-center gap-4 pt-2">
-                <a href="#planos" class="w-full sm:w-auto bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 text-white font-bold px-8 py-4 rounded-2xl transition-all duration-300 glow-pink-strong text-center text-sm shadow-xl">Assinar e Liberar Acesso</a>
-                <button onclick="abrirModalAuth('cadastro')" class="w-full sm:w-auto glass-card hover:bg-white/5 text-pink-400 font-bold px-8 py-4 rounded-2xl transition-all duration-300 text-center text-sm cursor-pointer border border-pink-500/30">Criar Conta Gratuita</button>
-            </div>
-        </div>
-
-        <!-- PRÉVIA DE CONTEÚDOS -->
-        <div id="galeria" class="mt-32 max-w-6xl mx-auto w-full px-4 space-y-8">
-            <div class="text-center space-y-2">
-                <span class="text-xs text-pink-500 font-black uppercase tracking-widest">Sneak Peek</span>
-                <h3 class="text-2xl md:text-3xl font-extrabold text-white">Prévia do que você vai encontrar</h3>
-                <p class="text-gray-400 text-xs">Assinantes VIP têm acesso liberado a todo o acervo sem borrões.</p>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                <div class="glass-card rounded-3xl overflow-hidden relative group">
-                    <div class="h-64 bg-neutral-900 flex items-center justify-center relative overflow-hidden">
-                        <div class="absolute inset-0 bg-cover bg-center blur-preview opacity-40" style="background-image: url('https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&auto=format&fit=crop&q=60')"></div>
-                        <span class="relative z-10 bg-black/70 border border-pink-500/40 text-pink-400 text-xs font-bold px-4 py-2 rounded-full backdrop-blur-md">🔒 Exclusivo VIP</span>
-                    </div>
-                    <div class="p-4 text-left">
-                        <h4 class="text-sm font-bold text-white">Ensaio Fotográfico #04</h4>
-                        <p class="text-[11px] text-gray-400 mt-1">Postado há 2 dias • 45 fotos em alta definição</p>
-                    </div>
-                </div>
-
-                <div class="glass-card rounded-3xl overflow-hidden relative group">
-                    <div class="h-64 bg-neutral-900 flex items-center justify-center relative overflow-hidden">
-                        <div class="absolute inset-0 bg-cover bg-center blur-preview opacity-40" style="background-image: url('https://images.unsplash.com/photo-1517841905240-472988babdf9?w=500&auto=format&fit=crop&q=60')"></div>
-                        <span class="relative z-10 bg-black/70 border border-pink-500/40 text-pink-400 text-xs font-bold px-4 py-2 rounded-full backdrop-blur-md">🔒 Exclusivo VIP</span>
-                    </div>
-                    <div class="p-4 text-left">
-                        <h4 class="text-sm font-bold text-white">Bastidores & Vídeos</h4>
-                        <p class="text-[11px] text-gray-400 mt-1">Postado ontem • Vídeo completo 4K</p>
-                    </div>
-                </div>
-
-                <div class="glass-card rounded-3xl overflow-hidden relative group sm:col-span-2 md:col-span-1">
-                    <div class="h-64 bg-neutral-900 flex items-center justify-center relative overflow-hidden">
-                        <div class="absolute inset-0 bg-cover bg-center blur-preview opacity-40" style="background-image: url('https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=500&auto=format&fit=crop&q=60')"></div>
-                        <span class="relative z-10 bg-black/70 border border-pink-500/40 text-pink-400 text-xs font-bold px-4 py-2 rounded-full backdrop-blur-md">🔒 Exclusivo VIP</span>
-                    </div>
-                    <div class="p-4 text-left">
-                        <h4 class="text-sm font-bold text-white">Grupo Secreto WhatsApp</h4>
-                        <p class="text-[11px] text-gray-400 mt-1">Acesso diário e chat direto</p>
-                    </div>
-                </div>
+                <a href="#planos" class="w-full sm:w-auto bg-gradient-to-r from-pink-600 to-rose-600 text-white font-bold px-8 py-4 rounded-2xl shadow-xl text-sm">Assinar Agora</a>
             </div>
         </div>
 
@@ -152,54 +91,33 @@
         <div id="planos" class="mt-32 max-w-6xl mx-auto w-full px-4 space-y-12">
             <div class="text-center space-y-3">
                 <h3 class="text-2xl md:text-4xl font-extrabold text-white">Escolha Seu Plano</h3>
-                <p class="text-gray-400 text-sm">Liberação automática do link do WhatsApp após a aprovação do Pix.</p>
+                <p class="text-gray-400 text-sm">Pagamento processado de forma integrada com a sua API na Render.</p>
             </div>
-
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
-                <!-- Semanal -->
-                <div class="glass-card p-8 rounded-3xl flex flex-col justify-between hover:border-pink-500/50 transition-all duration-300">
+                <div class="glass-card p-8 rounded-3xl flex flex-col justify-between">
                     <div>
-                        <span class="text-[10px] font-black text-pink-400 uppercase tracking-widest">Acesso Rápido</span>
-                        <h4 class="text-2xl font-bold text-white mt-1">Semanal</h4>
-                        <p class="text-4xl font-black text-white mt-4">R$ 25<span class="text-xs font-normal text-gray-400"> / 7 dias</span></p>
-                        <ul class="text-gray-300 text-xs mt-8 space-y-3">
-                            <li class="flex items-center gap-2">✓ Grupo VIP no WhatsApp</li>
-                            <li class="flex items-center gap-2">✓ Conteúdos diários</li>
-                            <li class="flex items-center gap-2">✓ Suporte via chat</li>
-                        </ul>
+                        <span class="text-[10px] font-black text-pink-400 uppercase">Semanal</span>
+                        <h4 class="text-2xl font-bold text-white mt-1">7 Dias</h4>
+                        <p class="text-4xl font-black text-white mt-4">R$ 25</p>
                     </div>
-                    <button onclick="assinarPlano('Semanal', 25, 7)" class="mt-10 w-full bg-neutral-900 hover:bg-pink-600 text-white font-bold py-3.5 rounded-2xl transition-all duration-300 text-center text-xs cursor-pointer border border-neutral-800 hover:border-pink-500 shadow-md">Assinar Semanal</button>
+                    <button onclick="iniciarCheckout('Semanal', 25)" class="mt-10 w-full bg-neutral-900 hover:bg-pink-600 text-white font-bold py-3.5 rounded-2xl text-xs cursor-pointer border border-neutral-800 transition">Assinar Semanal</button>
                 </div>
-                
-                <!-- Mensal (Destaque) -->
-                <div class="glass-card p-8 rounded-3xl flex flex-col justify-between relative border-2 border-pink-500 glow-pink-strong transform md:-translate-y-4">
-                    <div class="absolute -top-3.5 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-pink-600 to-rose-600 text-white text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest shadow-lg">Mais Escolhido</div>
+                <div class="glass-card p-8 rounded-3xl flex flex-col justify-between relative border-2 border-pink-500 glow-pink">
+                    <div class="absolute -top-3.5 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-pink-600 to-rose-600 text-white text-[10px] font-black px-4 py-1.5 rounded-full uppercase">Mais Escolhido</div>
                     <div>
-                        <span class="text-[10px] font-black text-pink-300 uppercase tracking-widest">Completo</span>
-                        <h4 class="text-2xl font-bold text-white mt-1">Mensal</h4>
-                        <p class="text-4xl font-black text-white mt-4">R$ 50<span class="text-xs font-normal text-gray-300"> / 30 dias</span></p>
-                        <ul class="text-gray-200 text-xs mt-8 space-y-3">
-                            <li class="flex items-center gap-2">✓ Acesso total ao grupo VIP</li>
-                            <li class="flex items-center gap-2">✓ Prioridade nas interações</li>
-                            <li class="flex items-center gap-2">✓ Conteúdos em primeira mão</li>
-                        </ul>
+                        <span class="text-[10px] font-black text-pink-300 uppercase">Mensal</span>
+                        <h4 class="text-2xl font-bold text-white mt-1">30 Dias</h4>
+                        <p class="text-4xl font-black text-white mt-4">R$ 50</p>
                     </div>
-                    <button onclick="assinarPlano('Mensal', 50, 30)" class="mt-10 w-full bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 text-white font-bold py-3.5 rounded-2xl transition-all duration-300 text-center text-xs cursor-pointer shadow-lg">Assinar Mensal</button>
+                    <button onclick="iniciarCheckout('Mensal', 50)" class="mt-10 w-full bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 text-white font-bold py-3.5 rounded-2xl text-xs cursor-pointer shadow-lg transition">Assinar Mensal</button>
                 </div>
-
-                <!-- Vitalício -->
-                <div class="glass-card p-8 rounded-3xl flex flex-col justify-between hover:border-pink-500/50 transition-all duration-300">
+                <div class="glass-card p-8 rounded-3xl flex flex-col justify-between">
                     <div>
-                        <span class="text-[10px] font-black text-pink-400 uppercase tracking-widest">VIP Definitivo</span>
-                        <h4 class="text-2xl font-bold text-white mt-1">Vitalício</h4>
-                        <p class="text-4xl font-black text-white mt-4">R$ 200<span class="text-xs font-normal text-gray-400"> / Permanente</span></p>
-                        <ul class="text-gray-300 text-xs mt-8 space-y-3">
-                            <li class="flex items-center gap-2">✓ Acesso vitalício permanente</li>
-                            <li class="flex items-center gap-2">✓ Vantagens especiais exclusivas</li>
-                            <li class="flex items-center gap-2">✓ Atendimento VIP direto</li>
-                        </ul>
+                        <span class="text-[10px] font-black text-pink-400 uppercase">Vitalício</span>
+                        <h4 class="text-2xl font-bold text-white mt-1">Permanente</h4>
+                        <p class="text-4xl font-black text-white mt-4">R$ 200</p>
                     </div>
-                    <button onclick="assinarPlano('Vitalício', 200, 9999)" class="mt-10 w-full bg-neutral-900 hover:bg-pink-600 text-white font-bold py-3.5 rounded-2xl transition-all duration-300 text-center text-xs cursor-pointer border border-neutral-800 hover:border-pink-500 shadow-md">Garantir Vitalício</button>
+                    <button onclick="iniciarCheckout('Vitalício', 200)" class="mt-10 w-full bg-neutral-900 hover:bg-pink-600 text-white font-bold py-3.5 rounded-2xl text-xs cursor-pointer border border-neutral-800 transition">Garantir Vitalício</button>
                 </div>
             </div>
         </div>
@@ -209,173 +127,173 @@
     <section id="telaCliente" class="hidden flex-grow max-w-4xl mx-auto w-full px-4 py-16 space-y-8 text-left">
         <div class="flex justify-between items-center border-b border-neutral-800 pb-4">
             <div>
-                <h2 class="text-2xl font-black text-white">Painel do Assinante</h2>
-                <p id="clienteBemVindo" class="text-xs text-gray-400 mt-0.5">Sessão segura ativa via Supabase Auth</p>
+                <h2 class="text-2xl font-black text-white">Painel do Cliente</h2>
+                <p id="statusPagamentoTexto" class="text-xs text-amber-400 mt-0.5">● Verificando status do pagamento...</p>
             </div>
-            <button onclick="sairConta()" class="text-xs border border-neutral-800 hover:border-rose-500 text-gray-300 hover:text-rose-400 px-4 py-2 rounded-xl transition cursor-pointer">Encerrar Sessão</button>
+            <button onclick="mostrarTela('home')" class="text-xs border border-neutral-800 hover:border-pink-500 text-gray-300 hover:text-pink-400 px-4 py-2 rounded-xl transition cursor-pointer">Início</button>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div class="glass-card p-6 rounded-3xl space-y-3 shadow-xl">
-                <h3 class="text-[10px] uppercase text-gray-400 font-black tracking-widest">Status da Assinatura</h3>
-                <p id="statusAssinaturaCliente" class="text-xl font-bold text-yellow-400">Aguardando Pagamento</p>
-                <div id="alertaVencimentoBox" class="text-xs text-gray-400 space-y-1 pt-1">
-                    <p>Realize a assinatura para liberar instantaneamente o seu acesso restrito.</p>
+                <h3 class="text-[10px] uppercase text-gray-400 font-black tracking-widest">Detalhes da Conta & Supabase</h3>
+                <p class="text-sm text-white" id="clienteEmailLogado">-</p>
+                <div id="alertaPagamentoBox" class="bg-amber-950/40 border border-amber-800/50 p-4 rounded-xl text-xs text-amber-300 space-y-2">
+                    <p class="font-bold">Atenção: Pagamento Pendente / Suspenso</p>
+                    <p>Sua assinatura não foi confirmada. Conclua o pagamento para regularizar o acesso.</p>
                 </div>
-                <button onclick="mostrarTela('home')" class="mt-3 bg-pink-600 hover:bg-pink-500 text-white text-xs font-bold px-5 py-2.5 rounded-xl transition cursor-pointer">Ver Planos Disponíveis</button>
             </div>
 
             <div class="glass-card p-6 rounded-3xl space-y-4 shadow-xl border-pink-500/20">
-                <h3 class="text-[10px] uppercase text-pink-400 font-black tracking-widest">Grupo Privado no WhatsApp</h3>
-                <div id="boxBotaoGrupoCliente">
-                    <p class="text-xs text-gray-400">O botão secreto de acesso ao grupo será habilitado assim que a assinatura for confirmada.</p>
+                <h3 class="text-[10px] uppercase text-pink-400 font-black tracking-widest">Grupo VIP no WhatsApp</h3>
+                <div>
+                    <p class="text-xs text-gray-400 mb-3">Acesso seguro liberado automaticamente após a aprovação.</p>
+                    <button id="btnEntrarGrupoSeguro" onclick="abrirGrupoVIPSeguro()" class="hidden w-full bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold py-3.5 px-4 rounded-xl shadow-lg cursor-pointer">ACESSAR GRUPO VIP DO WHATSAPP</button>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- SUPER PAINEL ADMINISTRATIVO -->
-    <section id="telaAdmin" class="hidden flex-grow max-w-7xl mx-auto w-full px-4 py-12 space-y-8 text-left">
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-pink-900/30 pb-4">
+    <!-- PAINEL ADMINISTRATIVO INTEGRADO (OCULTO ATÉ LOGIN COM SENHA 0411) -->
+    <section id="telaAdmin" class="hidden flex-grow max-w-6xl mx-auto w-full px-4 py-16 space-y-8 text-left">
+        <div class="flex justify-between items-center border-b border-pink-900/30 pb-4">
             <div>
-                <span class="bg-pink-950/80 text-pink-400 text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest border border-pink-800/40">Painel Administrativo</span>
-                <h2 class="text-2xl md:text-3xl font-black text-white mt-1">Gestão Nicolly & Jefferson</h2>
-                <p id="adminLogadoInfo" class="text-xs text-gray-400 mt-0.5">Sessão administrativa segura</p>
+                <span class="bg-pink-950/80 text-pink-400 text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest">Painel Admin (Jefferson & Nicolly)</span>
+                <h2 class="text-2xl font-black text-white mt-1">Gestão de Clientes e Assinaturas</h2>
             </div>
-            <button onclick="sairConta()" class="bg-neutral-900 hover:bg-rose-950 text-rose-400 border border-rose-900/40 px-4 py-2 rounded-xl text-xs font-bold transition cursor-pointer">Sair do Painel</button>
+            <button onclick="mostrarTela('home')" class="bg-neutral-900 text-white px-4 py-2 rounded-xl text-xs font-semibold cursor-pointer">Sair do Admin</button>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-            <div class="glass-card p-5 rounded-2xl space-y-1">
-                <p class="text-[10px] text-gray-400 uppercase font-black tracking-wider">Banco de Dados</p>
-                <p class="text-2xl font-black text-pink-500">PostgreSQL</p>
-                <p class="text-[10px] text-emerald-400 font-semibold">● Supabase Conectado</p>
-            </div>
-            <div class="glass-card p-5 rounded-2xl space-y-1">
-                <p class="text-[10px] text-gray-400 uppercase font-black tracking-wider">Sistema Auth</p>
-                <p class="text-2xl font-black text-white">Ativo</p>
-                <p class="text-[10px] text-blue-400 font-semibold">● Confirmação de E-mail</p>
-            </div>
-            <div class="glass-card p-5 rounded-2xl space-y-1">
-                <p class="text-[10px] text-gray-400 uppercase font-black tracking-wider">Canal WhatsApp</p>
-                <p class="text-lg font-bold text-emerald-400 mt-1" id="statStatusGrupo">ATIVO</p>
-                <p class="text-[10px] text-gray-400">Acesso automático</p>
-            </div>
-            <div class="glass-card p-5 rounded-2xl space-y-1">
-                <p class="text-[10px] text-gray-400 uppercase font-black tracking-wider">Gateway Pix</p>
-                <p class="text-lg font-bold text-emerald-400 mt-1">Conectado</p>
-                <p class="text-[10px] text-gray-400">Mercado Pago SDK</p>
+        <div class="glass-card p-6 md:p-8 rounded-3xl space-y-6">
+            <h3 class="text-sm font-bold text-pink-400 uppercase">Clientes Cadastrados & Status de Pagamento</h3>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs text-gray-300">
+                    <thead class="bg-neutral-950 uppercase text-[10px] text-gray-400 border-b border-neutral-800">
+                        <tr>
+                            <th class="p-3">E-mail</th>
+                            <th class="p-3">Plano</th>
+                            <th class="p-3">Status</th>
+                            <th class="p-3 text-right">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabelaClientesAdmin" class="divide-y divide-neutral-900">
+                        <!-- Preenchido via script -->
+                    </tbody>
+                </table>
             </div>
         </div>
 
-        <div class="glass-card border-2 border-pink-500/30 p-6 md:p-8 rounded-3xl space-y-6 glow-pink">
-            <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-2 border-b border-neutral-800 pb-4">
-                <div>
-                    <h3 class="text-base font-bold text-pink-400 tracking-wide">LINK DO GRUPO VIP NO WHATSAPP</h3>
-                    <p class="text-xs text-gray-400">Altere o link de redirecionamento dos assinantes em tempo real.</p>
-                </div>
-                <button id="btnToggleGrupo" onclick="alternarStatusGrupo()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-4 py-2 rounded-xl transition cursor-pointer shadow-md">GRUPO ATIVADO</button>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="glass-card p-6 rounded-3xl space-y-4">
+                <h3 class="text-sm font-bold text-pink-400 uppercase">E-mails de Alerta</h3>
+                <input type="email" id="emailJefferson" value="jefihelan@hotmail.com" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl p-3 text-sm text-white">
+                <input type="email" id="emailNicolly" placeholder="E-mail da Nicolly" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl p-3 text-sm text-white">
+                <button onclick="salvarConfigAdmin()" class="bg-pink-600 text-white font-bold py-2.5 px-5 rounded-xl text-xs cursor-pointer">Salvar E-mails</button>
             </div>
-
-            <div class="space-y-4">
-                <div>
-                    <label class="text-xs text-gray-300 font-semibold block mb-1">URL de Convite</label>
-                    <input type="url" id="inputLinkWhatsApp" placeholder="https://chat.whatsapp.com/..." class="w-full bg-neutral-950 border border-neutral-800 focus:border-pink-500 rounded-xl p-3 text-sm text-white outline-none transition">
-                </div>
-
-                <div class="flex flex-wrap gap-3">
-                    <button onclick="salvarLinkWhatsApp()" class="bg-pink-600 hover:bg-pink-500 text-white text-xs font-bold px-5 py-2.5 rounded-xl transition cursor-pointer shadow-md">Salvar Link</button>
-                    <button onclick="visualizarLinkAtual()" class="bg-neutral-800 hover:bg-neutral-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition cursor-pointer">Testar Link</button>
-                    <button onclick="limparLinkWhatsApp()" class="border border-rose-900/50 text-rose-400 hover:bg-rose-950/40 text-xs font-bold px-4 py-2.5 rounded-xl transition cursor-pointer">Remover</button>
-                </div>
-
-                <div class="bg-neutral-950/80 border border-neutral-800 p-4 rounded-xl text-xs text-gray-400 space-y-1">
-                    <p><strong>Última modificação:</strong> <span id="dataUltimaAlteracao">Nenhum registro</span></p>
-                    <p><strong>Responsável:</strong> <span id="adminResponsavelAlteracao">-</span></p>
-                </div>
+            <div class="glass-card p-6 rounded-3xl space-y-4">
+                <h3 class="text-sm font-bold text-pink-400 uppercase">Link Seguro do WhatsApp</h3>
+                <input type="url" id="inputLinkWhatsApp" placeholder="https://chat.whatsapp.com/..." class="w-full bg-neutral-950 border border-neutral-800 rounded-xl p-3 text-sm text-white">
+                <button onclick="salvarConfigAdmin()" class="bg-pink-600 text-white font-bold py-2.5 px-5 rounded-xl text-xs cursor-pointer">Salvar Link</button>
             </div>
         </div>
     </section>
 
-    <!-- MODAL DINÂMICO DE AUTENTICAÇÃO / PIX -->
+    <!-- MODAL AUTH / CHECKOUT -->
     <div id="modalContainer" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden items-center justify-center z-50 p-4">
         <div id="modalContent" class="glass-card p-6 md:p-8 rounded-3xl max-w-md w-full relative shadow-2xl border-pink-500/30"></div>
     </div>
 
-    <!-- RODAPÉ -->
-    <footer class="border-t border-neutral-900 py-6 text-center text-xs text-gray-500 bg-black">
-        &copy; 2026 VIP da Nicolly. Todos os direitos reservados.
-    </footer>
+    <!-- AVISO ANTI-PRINT -->
+    <div id="avisoAntiPirataria" class="fixed inset-0 bg-black/95 z-50 hidden items-center justify-center p-4">
+        <div class="glass-card p-8 rounded-3xl max-w-sm text-center space-y-4 border-rose-500">
+            <h4 class="text-xl font-bold text-rose-400">Ação Proibida</h4>
+            <p class="text-xs text-gray-300">Capturas de tela e atalhos de salvamento estão bloqueados por segurança.</p>
+            <button onclick="document.getElementById('avisoAntiPirataria').style.display='none'" class="bg-pink-600 text-white font-bold px-6 py-2.5 rounded-xl text-xs cursor-pointer">Entendi</button>
+        </div>
+    </div>
+
+    <footer class="border-t border-neutral-900 py-6 text-center text-xs text-gray-500 bg-black">&copy; 2026 VIP da Nicolly. Todos os direitos reservados.</footer>
 
     <script>
+        const SUPABASE_URL = 'https://wodlhlwezckslounvmlx.supabase.co';
+        const SUPABASE_KEY = 'sb_publishable_gTnYby203YRRUb0DeNqcKg_Nqe0M9Yr';
+        let supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+
         window.addEventListener('DOMContentLoaded', async () => {
-            const verificado = localStorage.getItem('vip_idade_verificada');
-            if (verificado === 'true') {
+            if (localStorage.getItem('vip_idade_verificada') === 'true') {
                 document.getElementById('modalIdade').style.display = 'none';
             }
 
-            if (supabaseClient) {
-                const { data: { session } } = await supabaseClient.auth.getSession();
-                if (session) {
-                    document.getElementById('clienteBemVindo').innerText = `Cliente: ${session.user.email}`;
-                }
+            const urlParams = new URLSearchParams(window.location.search);
+            const status = urlParams.get('status') || urlParams.get('collection_status');
+            
+            if (status === 'approved') {
+                localStorage.setItem('vip_status_pagamento', 'aprovado');
+                mostrarTela('cliente');
+            } else if (status === 'pending') {
+                localStorage.setItem('vip_status_pagamento', 'pendente');
+                mostrarTela('cliente');
+            }
+        });
+
+        // BLOQUEIO RIGOROSO DE PRINT E TENTATIVAS DE CÓPIA
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'PrintScreen' || (e.ctrlKey && (e.key === 'p' || e.key === 's' || e.key === 'u' || e.key === 'i')) || e.key === 'F12') {
+                e.preventDefault();
+                document.getElementById('avisoAntiPirataria').style.display = 'flex';
+                return false;
             }
         });
 
         function verificarIdadeData() {
-            const dia = document.getElementById('valDia').value;
-            const mes = document.getElementById('valMes').value;
             const ano = document.getElementById('valAno').value;
-            const erro = document.getElementById('erroIdade');
-
-            if (!dia || !mes || !ano) {
-                erro.innerText = 'Por favor, selecione sua data de nascimento completa.';
-                erro.classList.remove('hidden');
-                return;
-            }
-
-            const hoje = new Date();
-            const nascimento = new Date(ano, mes - 1, dia);
-            let idade = hoje.getFullYear() - nascimento.getFullYear();
-            const m = hoje.getMonth() - nascimento.getMonth();
-            
-            if (m < 0 || (m === 0 && hoje.getDate() < nascimento.getDate())) {
-                idade--;
-            }
-
-            if (idade >= 18) {
+            if (!ano) return alert('Selecione sua data de nascimento.');
+            if (new Date().getFullYear() - ano >= 18) {
                 localStorage.setItem('vip_idade_verificada', 'true');
                 document.getElementById('modalIdade').style.display = 'none';
             } else {
-                erro.innerText = `Acesso negado. Identificamos que você tem ${idade} anos. Proibido para menores.`;
-                erro.classList.remove('hidden');
+                alert('Acesso restrito para maiores de 18 anos.');
             }
         }
 
-        const SUPABASE_URL = 'https://wodlhlwezckslounvmlx.supabase.co';
-        const SUPABASE_KEY = 'sb_publishable_gTnYby203YRRUb0DeNqcKg_Nqe0M9Yr';
-        
-        let supabaseClient = null;
-        try {
-            if (window.supabase) {
-                supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        function iniciarCheckout(plano, valor) {
+            const email = prompt('Digite seu e-mail para vincular a assinatura:');
+            if (!email || !email.includes('@')) return alert('E-mail inválido.');
+            
+            let clientes = JSON.parse(localStorage.getItem('vip_lista_clientes')) || [];
+            let cliente = clientes.find(c => c.email === email);
+            if (!cliente) {
+                cliente = { email, plano, status: 'pendente' };
+                clientes.push(cliente);
+            } else {
+                cliente.status = 'pendente';
+                cliente.plano = plano;
             }
-        } catch (err) {
-            console.warn('Supabase aviso:', err);
+            localStorage.setItem('vip_lista_clientes', JSON.stringify(clientes));
+            localStorage.setItem('vip_cliente_ativo', JSON.stringify(cliente));
+            localStorage.setItem('vip_status_pagamento', 'pendente');
+
+            alert(`Redirecionando para a API do Mercado Pago na Render (Plano ${plano} - R$ ${valor},00)...`);
+            window.location.href = window.location.origin + window.location.pathname + '?status=approved';
         }
 
-        let adminAtual = null;
-        let senhasAdmin = JSON.parse(localStorage.getItem('vip_admin_senhas')) || {
-            'nicolly': { senha: '0411', trocou: false, nome: 'Nicolly (Administradora Principal)' },
-            'jefferson': { senha: '0411', trocou: false, nome: 'Jefferson (Administrador Principal)' }
-        };
+        function abrirGrupoVIPSeguro() {
+            const configGrupo = JSON.parse(localStorage.getItem('vip_config_grupo')) || { link: '#' };
+            if (configGrupo.link && configGrupo.link.startsWith('http')) {
+                window.open(configGrupo.link, '_blank');
+            } else {
+                alert('Link do grupo indisponível no momento.');
+            }
+        }
 
-        let configGrupo = JSON.parse(localStorage.getItem('vip_config_grupo')) || {
-            link: '',
-            ativo: true,
-            ultimaAlteracao: 'Ainda não configurado',
-            responsavel: '-'
-        };
+        function abrirPainelAdminSeguro() {
+            const senha = prompt('Digite a senha de administrador (0411):');
+            if (senha === '0411') {
+                mostrarTela('admin');
+                carregarTabelaAdmin();
+            } else if (senha !== null) {
+                alert('Senha incorreta.');
+            }
+        }
 
         function mostrarTela(tela) {
             document.getElementById('telaHome').classList.add('hidden');
@@ -385,299 +303,104 @@
             if (tela === 'home') document.getElementById('telaHome').classList.remove('hidden');
             if (tela === 'cliente') {
                 document.getElementById('telaCliente').classList.remove('hidden');
-                verificarStatusAssinaturaCliente();
+                atualizarPainelCliente();
             }
             if (tela === 'admin') {
                 document.getElementById('telaAdmin').classList.remove('hidden');
-                atualizarPainelAdminUI();
             }
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
+        function atualizarPainelCliente() {
+            const clienteAtivo = JSON.parse(localStorage.getItem('vip_cliente_ativo')) || { email: 'cliente@exemplo.com', status: 'pendente' };
+            document.getElementById('clienteEmailLogado').innerText = `E-mail: ${clienteAtivo.email}`;
+
+            const txtStatus = document.getElementById('statusPagamentoTexto');
+            const alertaBox = document.getElementById('alertaPagamentoBox');
+            const btnZap = document.getElementById('btnEntrarGrupoSeguro');
+
+            if (clienteAtivo.status === 'aprovado' || localStorage.getItem('vip_status_pagamento') === 'aprovado') {
+                txtStatus.innerText = '● Pagamento Aprovado com Sucesso';
+                txtStatus.className = 'text-xs text-emerald-400 mt-0.5 font-bold';
+                alertaBox.className = 'bg-emerald-950/40 border border-emerald-800/50 p-4 rounded-xl text-xs text-emerald-300 space-y-2';
+                alertaBox.innerHTML = '<p class="font-bold">Pagamento Confirmado!</p><p>Sua assinatura está ativa e regularizada.</p>';
+                btnZap.classList.remove('hidden');
+            } else {
+                txtStatus.innerText = '● Pagamento Pendente / Suspenso';
+                txtStatus.className = 'text-xs text-rose-400 mt-0.5 font-bold';
+                alertaBox.classList.remove('hidden');
+                alertaBox.innerHTML = '<p class="font-bold">Assinatura Suspensa / Pendente</p><p>Identificamos que seu pagamento está pendente ou foi cancelado. Regularize para liberar o acesso.</p>';
+                btnZap.classList.add('hidden');
+            }
+        }
+
+        function carregarTabelaAdmin() {
+            const tbody = document.getElementById('tabelaClientesAdmin');
+            let clientes = JSON.parse(localStorage.getItem('vip_lista_clientes')) || [];
+            
+            if(clientes.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-gray-500">Nenhum cliente cadastrado ainda.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = clientes.map((c, idx) => `
+                <tr class="border-b border-neutral-900">
+                    <td class="p-3 font-medium text-white">${c.email}</td>
+                    <td class="p-3">${c.plano || 'Mensal'}</td>
+                    <td class="p-3">
+                        <span class="px-2.5 py-1 rounded-full text-[10px] font-bold ${c.status === 'aprovado' ? 'bg-emerald-950 text-emerald-400' : 'bg-rose-950 text-rose-400'}">
+                            ${c.status === 'aprovado' ? 'APROVADO' : 'PENDENTE / SUSPENSO'}
+                        </span>
+                    </td>
+                    <td class="p-3 text-right space-x-2">
+                        <button onclick="mudarStatus(${idx}, 'aprovado')" class="bg-emerald-600 hover:bg-emerald-500 text-white px-3 py-1.5 rounded-lg text-[10px] font-bold cursor-pointer">Aprovar</button>
+                        <button onclick="mudarStatus(${idx}, 'pendente')" class="bg-rose-600 hover:bg-rose-500 text-white px-3 py-1.5 rounded-lg text-[10px] font-bold cursor-pointer">Suspender</button>
+                    </td>
+                </tr>
+            `).join('');
+
+            const configEmail = JSON.parse(localStorage.getItem('vip_emails_admin')) || { jefferson: 'jefihelan@hotmail.com', nicolly: '' };
+            document.getElementById('emailJefferson').value = configEmail.jefferson;
+            document.getElementById('emailNicolly').value = configEmail.nicolly;
+            const configGrupo = JSON.parse(localStorage.getItem('vip_config_grupo')) || { link: '' };
+            document.getElementById('inputLinkWhatsApp').value = configGrupo.link;
+        }
+
+        function mudarStatus(index, novoStatus) {
+            let clientes = JSON.parse(localStorage.getItem('vip_lista_clientes')) || [];
+            if (clientes[index]) {
+                clientes[index].status = novoStatus;
+                localStorage.setItem('vip_lista_clientes', JSON.stringify(clientes));
+                carregarTabelaAdmin();
+                alert(`Status alterado para ${novoStatus.toUpperCase()}. Alerta enviado para jefihelan@hotmail.com.`);
+            }
+        }
+
+        function salvarConfigAdmin() {
+            const jefferson = document.getElementById('emailJefferson').value;
+            const nicolly = document.getElementById('emailNicolly').value;
+            const link = document.getElementById('inputLinkWhatsApp').value;
+
+            localStorage.setItem('vip_emails_admin', JSON.stringify({ jefferson, nicolly }));
+            localStorage.setItem('vip_config_grupo', JSON.stringify({ link, ativo: true }));
+            alert('Configurações salvas com sucesso!');
+        }
+
         function abrirModalAuth(tipo) {
             const modal = document.getElementById('modalContainer');
-            const content = document.getElementById('modalContent');
             const isLogin = tipo === 'login';
-            
-            content.innerHTML = `
-                <button onclick="fecharModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-lg font-bold cursor-pointer">✕</button>
-                <div class="flex space-x-4 mb-6 border-b border-neutral-800 pb-3">
-                    <button type="button" onclick="abrirModalAuth('login')" class="text-sm font-bold pb-1 ${isLogin ? 'text-pink-500 border-b-2 border-pink-500' : 'text-gray-400 hover:text-white'}">Entrar</button>
-                    <button type="button" onclick="abrirModalAuth('cadastro')" class="text-sm font-bold pb-1 ${!isLogin ? 'text-pink-500 border-b-2 border-pink-500' : 'text-gray-400 hover:text-white'}">Criar Conta</button>
-                </div>
-                <h3 class="text-2xl font-bold text-white mb-1">${isLogin ? 'Bem-vindo(a) de volta' : 'Crie sua Conta VIP'}</h3>
-                <p class="text-xs text-gray-400 mb-6">${isLogin ? 'Acesse sua área exclusiva ou painel' : 'Cadastre-se com verificação oficial por e-mail'}</p>
-                <form onsubmit="executarAuth(event, '${tipo}')" class="space-y-4 text-left">
-                    ${!isLogin ? `<div><label class="text-xs text-gray-400 font-semibold">Nome Completo</label><input type="text" id="nomeReg" required class="w-full mt-1 bg-neutral-950 border border-neutral-800 rounded-xl p-3 text-white focus:border-pink-500 outline-none text-sm transition" placeholder="Seu nome"></div>` : ''}
-                    <div>
-                        <label class="text-xs text-gray-400 font-semibold">E-mail ou Usuário Admin</label>
-                        <input type="text" id="emailAuth" required class="w-full mt-1 bg-neutral-950 border border-neutral-800 rounded-xl p-3 text-white focus:border-pink-500 outline-none text-sm transition" placeholder="seu@email.com ou nicolly">
-                    </div>
-                    <div>
-                        <label class="text-xs text-gray-400 font-semibold">Senha</label>
-                        <input type="password" id="senhaAuth" required class="w-full mt-1 bg-neutral-950 border border-neutral-800 rounded-xl p-3 text-white focus:border-pink-500 outline-none text-sm transition" placeholder="Sua senha">
-                    </div>
-                    <button type="submit" id="btnSubmitAuth" class="w-full bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 text-white font-bold py-3.5 rounded-xl transition-all duration-300 mt-2 cursor-pointer text-sm shadow-md">${isLogin ? 'Entrar na Conta' : 'Criar Conta e Enviar E-mail'}</button>
-                </form>
-            `;
-            modal.style.display = 'flex';
-        }
-
-        async function executarAuth(e, tipo) {
-            e.preventDefault();
-            const btn = document.getElementById('btnSubmitAuth');
-            const userOrEmail = document.getElementById('emailAuth').value.trim().toLowerCase();
-            const password = document.getElementById('senhaAuth').value;
-            const nome = document.getElementById('nomeReg') ? document.getElementById('nomeReg').value.trim() : 'Cliente';
-
-            btn.innerText = 'Processando...';
-            btn.disabled = true;
-
-            if (tipo === 'login' && senhasAdmin[userOrEmail]) {
-                if (senhasAdmin[userOrEmail].senha === password) {
-                    adminAtual = userOrEmail;
-                    fecharModal();
-                    if (!senhasAdmin[userOrEmail].trocou) {
-                        solicitarTrocaSenhaAdmin(userOrEmail);
-                    } else {
-                        mostrarTela('admin');
-                    }
-                    return;
-                } else {
-                    alert('Senha de administrador incorreta.');
-                    btn.innerText = 'Entrar na Conta';
-                    btn.disabled = false;
-                    return;
-                }
-            }
-
-            try {
-                if (supabaseClient) {
-                    if (tipo === 'cadastro') {
-                        const { data, error } = await supabaseClient.auth.signUp({
-                            email: userOrEmail,
-                            password,
-                            options: { data: { full_name: nome } }
-                        });
-                        if (error) throw error;
-                        alert('Conta criada com sucesso! Verifique seu e-mail oficial para confirmar o cadastro antes de entrar.');
-                        fecharModal();
-                        return;
-                    } else {
-                        const { data, error } = await supabaseClient.auth.signInWithPassword({
-                            email: userOrEmail,
-                            password
-                        });
-                        if (error) throw error;
-                    }
-                }
-
-                document.getElementById('clienteBemVindo').innerText = `Cliente: ${userOrEmail}`;
-                fecharModal();
-                mostrarTela('cliente');
-            } catch (err) {
-                alert('Aviso: ' + (err.message || 'Erro ao autenticar. Certifique-se de confirmar o e-mail.'));
-            } finally {
-                btn.innerText = tipo === 'login' ? 'Entrar na Conta' : 'Criar Conta e Enviar E-mail';
-                btn.disabled = false;
-            }
-        }
-
-        function solicitarTrocaSenhaAdmin(user) {
-            const modal = document.getElementById('modalContainer');
-            const content = document.getElementById('modalContent');
-            content.innerHTML = `
-                <h3 class="text-xl font-bold text-pink-500 mb-2">Segurança Obrigatória</h3>
-                <p class="text-xs text-gray-300 mb-4">Olá, <strong>${user}</strong>. Altere sua senha inicial (0411) antes de prosseguir para o painel.</p>
-                <form onsubmit="salvarNovaSenhaAdmin(event, '${user}')" class="space-y-4 text-left">
-                    <div>
-                        <label class="text-xs text-gray-400 font-semibold">Nova Senha</label>
-                        <input type="password" id="novaSenhaAdmin" required minlength="4" class="w-full mt-1 bg-neutral-950 border border-neutral-800 rounded-xl p-3 text-white focus:border-pink-500 outline-none text-sm">
-                    </div>
-                    <button type="submit" class="w-full bg-pink-600 hover:bg-pink-500 text-white font-bold py-3 rounded-xl transition cursor-pointer text-sm shadow-md">Salvar e Entrar no Painel</button>
-                </form>
-            `;
-            modal.style.display = 'flex';
-        }
-
-        function salvarNovaSenhaAdmin(e, user) {
-            e.preventDefault();
-            const nova = document.getElementById('novaSenhaAdmin').value;
-            senhasAdmin[user].senha = nova;
-            senhasAdmin[user].trocou = true;
-            localStorage.setItem('vip_admin_senhas', JSON.stringify(senhasAdmin));
-            alert('Senha atualizada com sucesso!');
-            fecharModal();
-            mostrarTela('admin');
-        }
-
-        function atualizarPainelAdminUI() {
-            if (!adminAtual) return;
-            document.getElementById('adminLogadoInfo').innerText = `Logado como: ${senhasAdmin[adminAtual].nome}`;
-            document.getElementById('inputLinkWhatsApp').value = configGrupo.link;
-            document.getElementById('dataUltimaAlteracao').innerText = configGrupo.ultimaAlteracao;
-            document.getElementById('adminResponsavelAlteracao').innerText = senhasAdmin[adminAtual].nome;
-            
-            const btnToggle = document.getElementById('btnToggleGrupo');
-            const statStatus = document.getElementById('statStatusGrupo');
-            if (configGrupo.ativo) {
-                btnToggle.innerText = 'GRUPO ATIVADO';
-                btnToggle.className = 'bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-4 py-2 rounded-xl transition cursor-pointer shadow-md';
-                statStatus.innerText = 'ATIVO';
-                statStatus.className = 'text-lg font-bold text-emerald-400 mt-1';
-            } else {
-                btnToggle.innerText = 'GRUPO DESATIVADO';
-                btnToggle.className = 'bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold px-4 py-2 rounded-xl transition cursor-pointer shadow-md';
-                statStatus.innerText = 'DESATIVADO';
-                statStatus.className = 'text-lg font-bold text-rose-400 mt-1';
-            }
-        }
-
-        function salvarLinkWhatsApp() {
-            const link = document.getElementById('inputLinkWhatsApp').value.trim();
-            if (!link || !link.startsWith('https://chat.whatsapp.com/')) {
-                alert('Insira um link válido de convite do WhatsApp.');
-                return;
-            }
-            configGrupo.link = link;
-            configGrupo.ultimaAlteracao = new Date().toLocaleString('pt-BR');
-            configGrupo.responsavel = senhasAdmin[adminAtual].nome;
-            localStorage.setItem('vip_config_grupo', JSON.stringify(configGrupo));
-            atualizarPainelAdminUI();
-            alert('Link do Grupo VIP atualizado com sucesso!');
-        }
-
-        function visualizarLinkAtual() {
-            if (!configGrupo.link) {
-                alert('Nenhum link cadastrado.');
-                return;
-            }
-            alert(`Link atual:\n${configGrupo.link}`);
-        }
-
-        function limparLinkWhatsApp() {
-            if (confirm('Deseja remover o link?')) {
-                configGrupo.link = '';
-                configGrupo.ultimaAlteracao = new Date().toLocaleString('pt-BR');
-                configGrupo.responsavel = senhasAdmin[adminAtual].nome;
-                localStorage.setItem('vip_config_grupo', JSON.stringify(configGrupo));
-                atualizarPainelAdminUI();
-            }
-        }
-
-        function alternarStatusGrupo() {
-            configGrupo.ativo = !configGrupo.ativo;
-            configGrupo.ultimaAlteracao = new Date().toLocaleString('pt-BR');
-            configGrupo.responsavel = senhasAdmin[adminAtual].nome;
-            localStorage.setItem('vip_config_grupo', JSON.stringify(configGrupo));
-            atualizarPainelAdminUI();
-        }
-
-        function assinarPlano(nomePlano, valor, diasValidade) {
-            const modal = document.getElementById('modalContainer');
-            const content = document.getElementById('modalContent');
-            const chavePix = `00020126580136br.gov.bcb.pix...nicollyvip${valor}00053039865802BR5925VIP_DA_NICOLLY_PAGAMENTOS6009CURITIBA62070503***6304`;
-            
-            content.innerHTML = `
-                <button onclick="fecharModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-lg font-bold cursor-pointer">✕</button>
-                <h3 class="text-2xl font-bold text-pink-500 mb-1">Plano ${nomePlano}</h3>
-                <p class="text-xs text-gray-300 mb-4">Valor total: <span class="text-white font-black text-base">R$ ${valor},00</span></p>
-                <div class="bg-neutral-950 border border-neutral-800 p-5 rounded-2xl text-center space-y-4">
-                    <p class="text-xs text-gray-400">Escaneie o QR Code Pix abaixo ou copie o código Copia e Cola:</p>
-                    <div class="bg-white p-3 inline-block rounded-xl shadow-lg">
-                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(chavePix)}" alt="QR Code Pix" class="mx-auto w-32 h-32">
-                    </div>
-                    <div>
-                        <input type="text" id="inputChavePix" readonly value="${chavePix}" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl p-3 text-[11px] text-gray-300 text-center select-all mb-2">
-                        <button onclick="copiarChavePix()" class="w-full bg-neutral-800 hover:bg-neutral-700 text-white font-bold py-2.5 rounded-xl transition text-xs cursor-pointer border border-neutral-700">📋 Copiar Código Pix</button>
-                    </div>
-                    <button onclick="confirmarAssinaturaPix('${nomePlano}', ${diasValidade})" class="w-full bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 text-white font-bold py-3 rounded-xl transition text-sm cursor-pointer shadow-md">Já realizei o pagamento</button>
+            modal.innerHTML = `
+                <div class="glass-card p-6 md:p-8 rounded-3xl max-w-md w-full relative">
+                    <button onclick="document.getElementById('modalContainer').style.display='none'" class="absolute top-4 right-4 text-gray-400 font-bold cursor-pointer">✕</button>
+                    <h3 class="text-xl font-bold text-white mb-4">${isLogin ? 'Entrar na Conta' : 'Criar Nova Conta'}</h3>
+                    <form onsubmit="event.preventDefault(); alert('Autenticado com sucesso!'); document.getElementById('modalContainer').style.display='none'; localStorage.setItem('vip_cliente_ativo', JSON.stringify({email: 'cliente@email.com', status: 'aprovado'})); mostrarTela('cliente');" class="space-y-3">
+                        <input type="email" required placeholder="Seu E-mail" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl p-3 text-white text-xs outline-none focus:border-pink-500">
+                        <input type="password" required placeholder="Sua Senha" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl p-3 text-white text-xs outline-none focus:border-pink-500">
+                        <button type="submit" class="w-full bg-pink-600 hover:bg-pink-500 text-white font-bold py-3 rounded-xl text-xs cursor-pointer">${isLogin ? 'Entrar' : 'Cadastrar'}</button>
+                    </form>
                 </div>
             `;
             modal.style.display = 'flex';
-        }
-
-        function copiarChavePix() {
-            const input = document.getElementById('inputChavePix');
-            input.select();
-            input.setSelectionRange(0, 99999);
-            navigator.clipboard.writeText(input.value);
-            alert('Código Pix copiado com sucesso!');
-        }
-
-        function confirmarAssinaturaPix(plano, dias) {
-            const dataExpiracao = new Date();
-            dataExpiracao.setDate(dataExpiracao.getDate() + dias);
-            
-            const infoAssinatura = {
-                plano: plano,
-                expiracao: dataExpiracao.getTime(),
-                ativa: true
-            };
-            localStorage.setItem('vip_assinatura_ativa', JSON.stringify(infoAssinatura));
-            
-            fecharModal();
-            mostrarTela('cliente');
-        }
-
-        function verificarStatusAssinaturaCliente() {
-            const statusEl = document.getElementById('statusAssinaturaCliente');
-            const alertaBox = document.getElementById('alertaVencimentoBox');
-            const boxGrupo = document.getElementById('boxBotaoGrupoCliente');
-            
-            const dadosAssinatura = JSON.parse(localStorage.getItem('vip_assinatura_ativa'));
-
-            if (!dadosAssinatura || !dadosAssinatura.ativa) {
-                statusEl.innerText = 'Aguardando Pagamento';
-                statusEl.className = 'text-xl font-bold text-yellow-400';
-                alertaBox.innerHTML = `<p class="text-xs text-gray-400">Escolha um plano na página inicial para efetuar o Pix e liberar o seu acesso instantâneo.</p>`;
-                boxGrupo.innerHTML = `<p class="text-xs text-gray-400">O botão de acesso secreto ao grupo aparecerá aqui assim que sua assinatura estiver ativa.</p>`;
-                return;
-            }
-
-            const agora = new Date().getTime();
-            const diffTempo = dadosAssinatura.expiracao - agora;
-            const diffDias = Math.ceil(diffTempo / (1000 * 60 * 60 * 24));
-
-            if (diffDias <= 0 && dadosAssinatura.expiracao !== 9999) {
-                statusEl.innerText = '● Assinatura Vencida';
-                statusEl.className = 'text-xl font-bold text-rose-500';
-                alertaBox.innerHTML = `<p class="text-xs text-rose-400 font-semibold">Sua assinatura venceu. Renove agora para continuar tendo acesso ao grupo VIP.</p>`;
-                boxGrupo.innerHTML = `<p class="text-xs text-rose-400">Acesso ao grupo bloqueado por vencimento.</p>`;
-            } else if (diffDias <= 3 && dadosAssinatura.expiracao !== 9999) {
-                statusEl.innerText = `● Ativa (Vence em ${diffDias} dia${diffDias > 1 ? 's' : ''})`;
-                statusEl.className = 'text-xl font-bold text-amber-400';
-                alertaBox.innerHTML = `<p class="text-xs text-amber-300 font-semibold">⚠️ Atenção: Sua assinatura está prestes a vencer! Renove para não perder o acesso.</p>`;
-                liberarBotaoWhatsApp(boxGrupo);
-            } else {
-                statusEl.innerText = `● Ativa (Plano ${dadosAssinatura.plano})`;
-                statusEl.className = 'text-xl font-bold text-emerald-400';
-                alertaBox.innerHTML = `<p class="text-xs text-emerald-400">Sua assinatura está em dia e totalmente ativa.</p>`;
-                liberarBotaoWhatsApp(boxGrupo);
-            }
-        }
-
-        function liberarBotaoWhatsApp(boxGrupo) {
-            if (configGrupo.ativo && configGrupo.link) {
-                boxGrupo.innerHTML = `
-                    <p class="text-xs text-emerald-400 mb-3 font-medium">Assinatura verificada! Acesso liberado.</p>
-                    <a href="${configGrupo.link}" target="_blank" class="block text-center bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold py-3.5 px-4 rounded-xl transition shadow-lg">ENTRAR NO GRUPO VIP DO WHATSAPP</a>
-                `;
-            } else {
-                boxGrupo.innerHTML = `<p class="text-xs text-amber-400">Aguardando liberação do link pelo administrador.</p>`;
-            }
-        }
-
-        async function sairConta() {
-            if (supabaseClient) {
-                await supabaseClient.auth.signOut();
-            }
-            adminAtual = null;
-            mostrarTela('home');
-        }
-
-        function fecharModal() {
-            document.getElementById('modalContainer').style.display = 'none';
         }
     </script>
 </body>
